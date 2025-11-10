@@ -2,6 +2,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import { Calendar, Clock, Eye, CheckCircle, XCircle, AlertCircle, Printer, Mail } from 'lucide-react';
 import { useState } from 'react';
+import { INFRACTIONS, AGENTS } from '@/app/data/mockData';
 
 interface Infraction {
   id: string;
@@ -18,40 +19,28 @@ interface Infraction {
   photos?: string[];
 }
 
-// Données mockées - À remplacer par un appel API
+// Fonction pour récupérer une infraction par son ID
 const getMockInfraction = (id: string): Infraction | null => {
-  const infractions: Infraction[] = [
-    {
-      id: '2024-001247',
-      date: '06/11/2024',
-      heure: '14:35',
-      type: 'Excès de vitesse',
-      lieu: 'Dakar Plateau',
-      plaque: 'DK-1234-AB',
-      montant: '25000',
-      statut: 'En attente',
-      agent: 'Agent Diop',
-      source: 'Agent',
-      description: 'Vitesse constatée: 90 km/h en zone 50 km/h',
-      photos: ['https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400']
-    },
-    {
-      id: '2024-001246',
-      date: '06/11/2024',
-      heure: '14:22',
-      type: 'Stationnement interdit',
-      lieu: 'Almadies',
-      plaque: 'TH-5678-CD',
-      montant: '15000',
-      statut: 'Payé',
-      agent: 'VisionIA - Caméra 12',
-      source: 'VisionIA',
-      description: 'Véhicule stationné sur passage piéton',
-      photos: ['https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=400', 'https://images.unsplash.com/photo-1485463611174-f302f6a5c1c9?w=400']
-    },
-  ];
+  const inf = INFRACTIONS.find(i => i.id === id);
 
-  return infractions.find(inf => inf.id === id) || null;
+  if (!inf) return null;
+
+  const agent = AGENTS.find(a => a.id === inf.agentId);
+
+  return {
+    id: inf.id,
+    date: inf.date,
+    heure: inf.heure,
+    type: inf.type,
+    lieu: inf.lieu,
+    plaque: inf.plaque,
+    montant: inf.montant.toString(),
+    statut: inf.statut,
+    agent: agent ? `${agent.prenom} ${agent.nom}` : inf.source,
+    source: inf.agentId ? 'Agent' as const : 'VisionIA' as const,
+    description: undefined,
+    photos: inf.photo ? [inf.photo] : undefined
+  };
 };
 
 export default function InfractionDetailPage() {
