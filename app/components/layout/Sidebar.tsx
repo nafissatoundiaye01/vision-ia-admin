@@ -58,11 +58,22 @@ export default function Sidebar() {
     if (navRef.current) {
       const activeLink = navRef.current.querySelector('.active-item') as HTMLElement;
       if (activeLink) {
-        const navTop = navRef.current.getBoundingClientRect().top;
-        const linkTop = activeLink.getBoundingClientRect().top;
+        // Calculer la position en tenant compte du scroll
+        const navScrollTop = navRef.current.scrollTop;
+        const activeLinkOffsetTop = activeLink.offsetTop;
+
         setIndicatorStyle({
-          top: linkTop - navTop,
+          top: activeLinkOffsetTop,
           height: activeLink.offsetHeight,
+        });
+
+        // Scroller automatiquement pour centrer l'élément actif
+        const navHeight = navRef.current.clientHeight;
+        const scrollPosition = activeLinkOffsetTop - (navHeight / 2) + (activeLink.offsetHeight / 2);
+
+        navRef.current.scrollTo({
+          top: scrollPosition,
+          behavior: 'smooth'
         });
       }
     }
