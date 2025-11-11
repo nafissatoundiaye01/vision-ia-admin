@@ -92,45 +92,44 @@ export default function DashboardPage() {
     },
   ];
 
-  // Recent Infractions
-  const recentInfractions = [
-    {
-      id: '2024-001247',
-      type: 'Excès de vitesse',
-      plaque: 'DK-1234-AB',
-      zone: 'Dakar Plateau',
-      montant: '25,000',
-      statut: 'En attente',
-      time: 'Il y a 5 min'
-    },
-    {
-      id: '2024-001246',
-      type: 'Stationnement interdit',
-      plaque: 'TH-5678-CD',
-      zone: 'Almadies',
-      montant: '15,000',
-      statut: 'Payé',
-      time: 'Il y a 12 min'
-    },
-    {
-      id: '2024-001245',
-      type: 'Feu rouge grillé',
-      plaque: 'DK-9012-EF',
-      zone: 'Point E',
-      montant: '50,000',
-      statut: 'En attente',
-      time: 'Il y a 18 min'
-    },
-    {
-      id: '2024-001244',
-      type: 'Téléphone au volant',
-      plaque: 'RU-3456-GH',
-      zone: 'Ouest Foire',
-      montant: '20,000',
-      statut: 'Payé',
-      time: 'Il y a 25 min'
-    },
-  ];
+  // KPIs originaux et pertinents
+  const totalInfractionsData = filteredData;
+
+  // 1. Score de Conformité (pourcentage d'infractions non répétées)
+  const scoreConformite = selectedPeriod === 'today' ? 87.3 :
+                          selectedPeriod === 'week' ? 85.8 :
+                          selectedPeriod === 'month' ? 84.2 :
+                          82.5;
+
+  // 2. Temps Moyen de Traitement (de la détection au paiement)
+  const tempsMoyenTraitement = selectedPeriod === 'today' ? '4.2h' :
+                               selectedPeriod === 'week' ? '6.8h' :
+                               selectedPeriod === 'month' ? '12.5h' :
+                               '18.3h';
+
+  // 3. Taux de Détection IA (% d'infractions détectées automatiquement)
+  const tauxDetectionIA = selectedPeriod === 'today' ? 68 :
+                          selectedPeriod === 'week' ? 65 :
+                          selectedPeriod === 'month' ? 62 :
+                          58;
+
+  // 4. Efficacité Agents (ratio infractions validées/détectées)
+  const efficaciteAgents = selectedPeriod === 'today' ? 94.2 :
+                           selectedPeriod === 'week' ? 92.8 :
+                           selectedPeriod === 'month' ? 91.5 :
+                           89.7;
+
+  // 5. Impact Préventif (réduction dans zones critiques)
+  const impactPreventif = selectedPeriod === 'today' ? -8 :
+                          selectedPeriod === 'week' ? -12 :
+                          selectedPeriod === 'month' ? -18 :
+                          -25;
+
+  // 6. Véhicules Récidivistes
+  const vehiculesRecidivistes = selectedPeriod === 'today' ? 12 :
+                                selectedPeriod === 'week' ? 38 :
+                                selectedPeriod === 'month' ? 142 :
+                                567;
 
   // Zones à risque
   const zonesRisque = [
@@ -260,10 +259,33 @@ export default function DashboardPage() {
           <div className="bg-gray-100 rounded-xl h-120 sm:h-120 overflow-hidden border border-gray-200">
             <DakarMapbox
               zones={[
-                { zone: 'Dakar Plateau', infractions: 45, lat: 14.715, lng: -17.467, variation: '+15%' },
-                { zone: 'Almadies', infractions: 38, lat: 14.735, lng: -17.5, variation: '+8%' },
-                { zone: 'Point E', infractions: 32, lat: 14.72, lng: -17.45, variation: '+12%' },
-                { zone: 'Ouest Foire', infractions: 28, lat: 14.7, lng: -17.48, variation: '+5%' },
+                // ========== ZONE ROUGE (CRITIQUE) - 1 seule zone ==========
+                // Une seule zone critique très réduite
+                { zone: 'Pikine', infractions: 55, lat: 14.7500, lng: -17.3833, variation: '+12%' },
+
+                // ========== ZONES ORANGES (MOYENNES) - 32-52 infractions ==========
+                // Zones résidentielles et commerciales moyennes
+                { zone: 'Plateau', infractions: 52, lat: 14.6937, lng: -17.4441, variation: '+11%' },
+                { zone: 'Médina', infractions: 50, lat: 14.6850, lng: -17.4550, variation: '+10%' },
+                { zone: 'Guédiawaye', infractions: 48, lat: 14.7833, lng: -17.4000, variation: '+9%' },
+                { zone: 'Parcelles Assainies', infractions: 46, lat: 14.7833, lng: -17.4333, variation: '+9%' },
+                { zone: 'Grand Dakar', infractions: 44, lat: 14.7167, lng: -17.4500, variation: '+8%' },
+                { zone: 'Liberté 6', infractions: 42, lat: 14.7000, lng: -17.4600, variation: '+8%' },
+                { zone: 'Ouest Foire', infractions: 40, lat: 14.7300, lng: -17.4750, variation: '+7%' },
+                { zone: 'Thiaroye', infractions: 38, lat: 14.7833, lng: -17.3500, variation: '+7%' },
+                { zone: 'Point E', infractions: 36, lat: 14.7050, lng: -17.4550, variation: '+6%' },
+                { zone: 'Gueule Tapée', infractions: 34, lat: 14.6900, lng: -17.4600, variation: '+6%' },
+                { zone: 'Ouakam', infractions: 32, lat: 14.7194, lng: -17.4897, variation: '+5%' },
+
+                // ========== ZONES BLEUES (BIEN) - 5-30 infractions ==========
+                // Zones résidentielles calmes et quartiers huppés
+                { zone: 'Almadies', infractions: 28, lat: 14.7392, lng: -17.5094, variation: '+5%' },
+                { zone: 'Mermoz', infractions: 24, lat: 14.7157, lng: -17.4677, variation: '+4%' },
+                { zone: 'Fann', infractions: 20, lat: 14.7050, lng: -17.4650, variation: '+4%' },
+                { zone: 'Yoff', infractions: 18, lat: 14.7500, lng: -17.4833, variation: '+3%' },
+                { zone: 'Ngor', infractions: 15, lat: 14.7450, lng: -17.5150, variation: '+3%' },
+                { zone: 'Amitié', infractions: 12, lat: 14.7200, lng: -17.4400, variation: '+2%' },
+                { zone: 'Bargny', infractions: 8, lat: 14.6833, lng: -17.2333, variation: '+1%' },
               ]}
             />
           </div>
@@ -296,58 +318,93 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Infractions Récentes */}
+      {/* KPIs Originaux et Intelligents */}
       <div className="mt-4 md:mt-6 bg-white rounded-xl border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg transition-all">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 md:mb-5">
-          <h2 className="text-lg sm:text-xl font-bold text-[#3d5a5c]">Infractions Récentes</h2>
-          <button className="text-sm text-[#3d5a5c] hover:text-[#3d5a5c] font-medium transition-colors text-left sm:text-right">
-            Voir toutes →
-          </button>
-        </div>
-        <div className="overflow-x-auto -mx-4 sm:mx-0">
-          <div className="inline-block min-w-full align-middle">
-            <table className="min-w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap">ID</th>
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap">Type</th>
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap">Plaque</th>
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap hidden md:table-cell">Zone</th>
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap">Montant</th>
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap">Statut</th>
-                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold text-[#3d5a5c] whitespace-nowrap hidden lg:table-cell">Heure</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentInfractions.map((infraction) => (
-                  <tr key={infraction.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-3 sm:py-4 px-2 sm:px-4">
-                      <span className="text-xs sm:text-sm font-medium text-gray-900">{infraction.id}</span>
-                    </td>
-                    <td className="py-3 sm:py-4 px-2 sm:px-4">
-                      <span className="text-xs sm:text-sm text-gray-700">{infraction.type}</span>
-                    </td>
-                    <td className="py-3 sm:py-4 px-2 sm:px-4">
-                      <span className="text-xs sm:text-sm font-medium text-[#3d5a5c]">{infraction.plaque}</span>
-                    </td>
-                    <td className="py-3 sm:py-4 px-2 sm:px-4 hidden md:table-cell">
-                      <span className="text-xs sm:text-sm text-gray-600">{infraction.zone}</span>
-                    </td>
-                    <td className="py-3 sm:py-4 px-2 sm:px-4">
-                      <span className="text-xs sm:text-sm font-semibold text-gray-900 whitespace-nowrap">{infraction.montant} FCFA</span>
-                    </td>
-                    <td className="py-3 sm:py-4 px-2 sm:px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(infraction.statut)}`}>
-                        {infraction.statut}
-                      </span>
-                    </td>
-                    <td className="py-3 sm:py-4 px-2 sm:px-4 hidden lg:table-cell">
-                      <span className="text-xs text-gray-500">{infraction.time}</span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <h2 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4 md:mb-6">Indicateurs de Performance</h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Score de Conformité */}
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">{scoreConformite}%</div>
+            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Score de Conformité</div>
+            <div className="text-xs text-gray-500">Conducteurs sans récidive</div>
+          </div>
+
+          {/* Temps Moyen de Traitement */}
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">{tempsMoyenTraitement}</div>
+            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Temps de Traitement</div>
+            <div className="text-xs text-gray-500">Détection → Paiement</div>
+          </div>
+
+          {/* Taux de Détection IA */}
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">{tauxDetectionIA}%</div>
+            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Détection Automatique</div>
+            <div className="text-xs text-gray-500">VisionIA en action</div>
+          </div>
+
+          {/* Efficacité des Agents */}
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">{efficaciteAgents}%</div>
+            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Efficacité Agents</div>
+            <div className="text-xs text-gray-500">Taux de validation</div>
+          </div>
+
+          {/* Impact Préventif */}
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">{impactPreventif}%</div>
+            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Impact Préventif</div>
+            <div className="text-xs text-gray-500">Baisse zones critiques</div>
+          </div>
+
+          {/* Véhicules Récidivistes */}
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-2">{vehiculesRecidivistes}</div>
+            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Véhicules Récidivistes</div>
+            <div className="text-xs text-gray-500">≥2 infractions détectées</div>
           </div>
         </div>
       </div>

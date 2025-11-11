@@ -8,7 +8,7 @@ import DateRangePicker from '@/app/components/ui/DateRangePicker';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
-// Custom CSS for popup
+// Custom CSS for popup and markers
 if (typeof document !== 'undefined') {
   const style = document.createElement('style');
   style.textContent = `
@@ -32,6 +32,10 @@ if (typeof document !== 'undefined') {
     }
     .mapboxgl-marker {
       z-index: 10;
+      will-change: transform;
+    }
+    .zone-marker, .camera-marker {
+      pointer-events: auto;
     }
   `;
   document.head.appendChild(style);
@@ -53,6 +57,18 @@ interface ZoneData {
   }[];
 }
 
+interface CameraData {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  zone: string;
+  status: 'active' | 'inactive' | 'maintenance';
+  infractions: number;
+  variation: string;
+  severity: 'critique' | 'moyen' | 'faible';
+}
+
 export default function MapPage() {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<mapboxgl.Map | null>(null);
@@ -63,6 +79,10 @@ export default function MapPage() {
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [popupInfo, setPopupInfo] = useState<ZoneData | null>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [mapView, setMapView] = useState<'infractions' | 'cameras'>('infractions');
+  const [selectedCamera, setSelectedCamera] = useState<CameraData | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Données brutes avec historique journalier
   const rawZonesData: ZoneData[] = [
@@ -157,7 +177,7 @@ export default function MapPage() {
     {
       name: 'Parcelles Assainies',
       lat: 14.7697,
-      lng: -17.4410,
+      lng: -17.4150,
       totalInfractions: 0,
       severity: 'faible',
       infractions: [
@@ -245,6 +265,61 @@ export default function MapPage() {
   ];
 
   const [filteredZonesData, setFilteredZonesData] = useState<ZoneData[]>(rawZonesData);
+
+  // Données des caméras de surveillance (criticité basée sur infractions: >60=critique, 30-60=moyen, <30=faible)
+  // Coordonnées corrigées pour rester sur terre à Dakar (lng doit être entre -17.50 et -17.40 pour Dakar)
+  const camerasData: CameraData[] = [
+    // Dakar Plateau - 6 caméras
+    { id: 'CAM-001', name: 'Caméra Plateau Central', lat: 14.6737, lng: -17.4479, zone: 'Dakar Plateau', status: 'active', infractions: 89, variation: '+12%', severity: 'critique' },
+    { id: 'CAM-002', name: 'Caméra Plateau Nord', lat: 14.6850, lng: -17.4480, zone: 'Dakar Plateau', status: 'active', infractions: 67, variation: '+8%', severity: 'critique' },
+    { id: 'CAM-003', name: 'Caméra Place Indépendance', lat: 14.6778, lng: -17.4467, zone: 'Dakar Plateau', status: 'active', infractions: 78, variation: '+11%', severity: 'critique' },
+    { id: 'CAM-004', name: 'Caméra Avenue Pompidou', lat: 14.6690, lng: -17.4420, zone: 'Dakar Plateau', status: 'active', infractions: 56, variation: '+7%', severity: 'moyen' },
+    { id: 'CAM-005', name: 'Caméra Port de Dakar', lat: 14.6650, lng: -17.4380, zone: 'Dakar Plateau', status: 'maintenance', infractions: 0, variation: '0%', severity: 'faible' },
+    { id: 'CAM-006', name: 'Caméra Plateau Sud', lat: 14.6700, lng: -17.4450, zone: 'Dakar Plateau', status: 'active', infractions: 62, variation: '+9%', severity: 'critique' },
+
+    // Almadies - 5 caméras (corrigées pour rester sur la côte)
+    { id: 'CAM-007', name: 'Caméra Almadies Plage', lat: 14.7297, lng: -17.4896, zone: 'Almadies', status: 'active', infractions: 52, variation: '+5%', severity: 'moyen' },
+    { id: 'CAM-008', name: 'Caméra Almadies Centre', lat: 14.7350, lng: -17.4820, zone: 'Almadies', status: 'active', infractions: 45, variation: '+3%', severity: 'moyen' },
+    { id: 'CAM-009', name: 'Caméra Ngor', lat: 14.7450, lng: -17.4900, zone: 'Almadies', status: 'active', infractions: 38, variation: '+2%', severity: 'moyen' },
+    { id: 'CAM-010', name: 'Caméra Ouakam', lat: 14.7200, lng: -17.4850, zone: 'Almadies', status: 'active', infractions: 41, variation: '+4%', severity: 'moyen' },
+    { id: 'CAM-011', name: 'Caméra Mamelles', lat: 14.7100, lng: -17.4750, zone: 'Almadies', status: 'active', infractions: 35, variation: '+1%', severity: 'moyen' },
+
+    // Point E - 5 caméras
+    { id: 'CAM-012', name: 'Caméra Point E Principal', lat: 14.7040, lng: -17.4655, zone: 'Point E', status: 'active', infractions: 73, variation: '+15%', severity: 'critique' },
+    { id: 'CAM-013', name: 'Caméra Point E Sud', lat: 14.6990, lng: -17.4600, zone: 'Point E', status: 'active', infractions: 61, variation: '+10%', severity: 'critique' },
+    { id: 'CAM-014', name: 'Caméra Fann Résidence', lat: 14.7080, lng: -17.4700, zone: 'Point E', status: 'active', infractions: 55, variation: '+8%', severity: 'moyen' },
+    { id: 'CAM-015', name: 'Caméra Amitié', lat: 14.7020, lng: -17.4580, zone: 'Point E', status: 'active', infractions: 68, variation: '+13%', severity: 'critique' },
+    { id: 'CAM-016', name: 'Caméra Mermoz', lat: 14.7150, lng: -17.4520, zone: 'Point E', status: 'maintenance', infractions: 0, variation: '0%', severity: 'faible' },
+
+    // Ouest Foire - 4 caméras
+    { id: 'CAM-017', name: 'Caméra Ouest Foire', lat: 14.7348, lng: -17.4765, zone: 'Ouest Foire', status: 'active', infractions: 45, variation: '+7%', severity: 'moyen' },
+    { id: 'CAM-018', name: 'Caméra Yoff', lat: 14.7450, lng: -17.4650, zone: 'Ouest Foire', status: 'active', infractions: 39, variation: '+5%', severity: 'moyen' },
+    { id: 'CAM-019', name: 'Caméra HLM Grand Yoff', lat: 14.7520, lng: -17.4620, zone: 'Ouest Foire', status: 'active', infractions: 42, variation: '+6%', severity: 'moyen' },
+    { id: 'CAM-020', name: 'Caméra Cité Millionnaire', lat: 14.7280, lng: -17.4700, zone: 'Ouest Foire', status: 'active', infractions: 37, variation: '+4%', severity: 'moyen' },
+
+    // Parcelles Assainies - 4 caméras (coordonnées corrigées - zone est de Dakar)
+    { id: 'CAM-021', name: 'Caméra Parcelles U10', lat: 14.7697, lng: -17.4150, zone: 'Parcelles Assainies', status: 'active', infractions: 28, variation: '+2%', severity: 'faible' },
+    { id: 'CAM-022', name: 'Caméra Parcelles U20', lat: 14.7750, lng: -17.4100, zone: 'Parcelles Assainies', status: 'maintenance', infractions: 0, variation: '0%', severity: 'faible' },
+    { id: 'CAM-023', name: 'Caméra Parcelles U15', lat: 14.7720, lng: -17.4125, zone: 'Parcelles Assainies', status: 'active', infractions: 24, variation: '+1%', severity: 'faible' },
+    { id: 'CAM-024', name: 'Caméra Cambérène', lat: 14.7800, lng: -17.4050, zone: 'Parcelles Assainies', status: 'active', infractions: 21, variation: '0%', severity: 'faible' },
+
+    // Pikine - 5 caméras
+    { id: 'CAM-025', name: 'Caméra Pikine Centre', lat: 14.7564, lng: -17.3950, zone: 'Pikine', status: 'active', infractions: 64, variation: '+9%', severity: 'critique' },
+    { id: 'CAM-026', name: 'Caméra Pikine Est', lat: 14.7600, lng: -17.3850, zone: 'Pikine', status: 'active', infractions: 58, variation: '+6%', severity: 'moyen' },
+    { id: 'CAM-027', name: 'Caméra Thiaroye', lat: 14.7700, lng: -17.3600, zone: 'Pikine', status: 'active', infractions: 52, variation: '+8%', severity: 'moyen' },
+    { id: 'CAM-028', name: 'Caméra Guinaw Rails', lat: 14.7500, lng: -17.3900, zone: 'Pikine', status: 'active', infractions: 47, variation: '+5%', severity: 'moyen' },
+    { id: 'CAM-029', name: 'Caméra Dalifort', lat: 14.7650, lng: -17.3750, zone: 'Pikine', status: 'maintenance', infractions: 0, variation: '0%', severity: 'faible' },
+
+    // Guédiawaye - 3 caméras
+    { id: 'CAM-030', name: 'Caméra Guédiawaye Centre', lat: 14.7689, lng: -17.4070, zone: 'Guédiawaye', status: 'active', infractions: 38, variation: '+4%', severity: 'moyen' },
+    { id: 'CAM-031', name: 'Caméra Sam Notaire', lat: 14.7750, lng: -17.4100, zone: 'Guédiawaye', status: 'active', infractions: 33, variation: '+3%', severity: 'moyen' },
+    { id: 'CAM-032', name: 'Caméra Golf Sud', lat: 14.7620, lng: -17.4050, zone: 'Guédiawaye', status: 'active', infractions: 29, variation: '+2%', severity: 'faible' },
+
+    // Rufisque - 3 caméras
+    { id: 'CAM-033', name: 'Caméra Rufisque Centre', lat: 14.7167, lng: -17.2674, zone: 'Rufisque', status: 'active', infractions: 31, variation: '+1%', severity: 'moyen' },
+    { id: 'CAM-034', name: 'Caméra Rufisque Est', lat: 14.7200, lng: -17.2550, zone: 'Rufisque', status: 'active', infractions: 26, variation: '0%', severity: 'faible' },
+    { id: 'CAM-035', name: 'Caméra Bargny', lat: 14.6950, lng: -17.2300, zone: 'Rufisque', status: 'active', infractions: 23, variation: '-1%', severity: 'faible' },
+  ];
 
   useEffect(() => {
     if (!startDate || !endDate) {
@@ -666,88 +741,282 @@ export default function MapPage() {
     markersRef.current = [];
     markerElementsRef.current = [];
 
-    const displayedZones = filteredZonesData.filter(zone =>
-      (selectedFilter === 'all' || zone.severity === selectedFilter) &&
-      (selectedZone === 'all' || zone.name === selectedZone) &&
-      zone.totalInfractions > 0
-    );
+    if (mapView === 'infractions') {
+      // Vue des infractions par zones avec heatmap intégrée
+      const displayedZones = filteredZonesData.filter(zone =>
+        (selectedFilter === 'all' || zone.severity === selectedFilter) &&
+        (selectedZone === 'all' || zone.name === selectedZone) &&
+        zone.totalInfractions > 0
+      );
 
-    console.log('Adding markers for zones:', displayedZones.length);
+      console.log('Adding markers for zones:', displayedZones.length);
 
-    displayedZones.forEach((zone, index) => {
-      const el = document.createElement('div');
-      el.className = 'zone-marker';
+      // Ajouter la couche de chaleur dans le mode infractions
+      if (mapInstance.current) {
+        // Supprimer l'ancienne heatmap si elle existe
+        if (mapInstance.current.getLayer('infractions-heatmap')) {
+          mapInstance.current.removeLayer('infractions-heatmap');
+        }
+        if (mapInstance.current.getSource('infractions-heat')) {
+          mapInstance.current.removeSource('infractions-heat');
+        }
 
-      const size = Math.min(40 + (zone.totalInfractions * 0.4), 80);
+        // Créer des points de densité basés sur les infractions
+        const heatmapFeatures: any[] = [];
 
-      el.style.cssText = `
-        background-color: ${getSeverityColor(zone.severity)};
-        width: ${size}px;
-        height: ${size}px;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 4px solid white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px ${getSeverityColor(zone.severity)}88;
-        opacity: 0.85;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        font-size: 14px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        transform-origin: center center;
-        transform: scale(1);
-      `;
+        displayedZones.forEach(zone => {
+          const basePoints = Math.floor(zone.totalInfractions * 1.5);
+          const pointsCount = Math.max(15, basePoints);
 
-      el.innerHTML = `<span style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);">${zone.totalInfractions}</span>`;
+          for (let i = 0; i < pointsCount; i++) {
+            const randomAngle = Math.random() * 2 * Math.PI;
+            const u1 = Math.random();
+            const u2 = Math.random();
+            const gaussianRandom = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+            const randomDistance = Math.abs(gaussianRandom) * 0.003;
 
-      el.addEventListener('mouseenter', () => {
-        el.style.opacity = '1';
-        el.style.boxShadow = `0 6px 16px rgba(0, 0, 0, 0.4), 0 0 30px ${getSeverityColor(zone.severity)}`;
-        el.style.borderWidth = '5px';
-      });
+            const offsetLng = Math.cos(randomAngle) * randomDistance;
+            const offsetLat = Math.sin(randomAngle) * randomDistance;
 
-      el.addEventListener('mouseleave', () => {
-        el.style.opacity = '0.85';
-        el.style.boxShadow = `0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px ${getSeverityColor(zone.severity)}88`;
-        el.style.borderWidth = '4px';
-      });
-
-      el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setActiveMarkerIndex(index);
-        setPopupInfo(zone);
-        setSelectedZone(zone.name);
-
-        markerElementsRef.current.forEach((markerEl) => {
-          markerEl.style.opacity = '0';
-          markerEl.style.transform = 'scale(0.5)';
-          markerEl.style.pointerEvents = 'none';
+            heatmapFeatures.push({
+              type: 'Feature',
+              properties: {
+                infractions: zone.totalInfractions,
+                zone: zone.name
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: [zone.lng + offsetLng, zone.lat + offsetLat]
+              }
+            });
+          }
         });
+
+        const heatmapData: any = {
+          type: 'FeatureCollection',
+          features: heatmapFeatures
+        };
+
+        // Ajouter la source de données
+        mapInstance.current.addSource('infractions-heat', {
+          type: 'geojson',
+          data: heatmapData
+        });
+
+        // Ajouter la couche heatmap
+        mapInstance.current.addLayer({
+          id: 'infractions-heatmap',
+          type: 'heatmap',
+          source: 'infractions-heat',
+          maxzoom: 18,
+          paint: {
+            'heatmap-weight': [
+              'interpolate',
+              ['exponential', 2],
+              ['get', 'infractions'],
+              0, 0,
+              10, 0.2,
+              30, 0.5,
+              50, 0.8,
+              85, 1
+            ],
+            'heatmap-intensity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              0, 0.5,
+              9, 0.8,
+              12, 1.0,
+              15, 1.2
+            ],
+            'heatmap-color': [
+              'interpolate',
+              ['linear'],
+              ['heatmap-density'],
+              0, 'rgba(0, 0, 0, 0)',
+              0.05, 'rgba(0, 100, 255, 0.3)',
+              0.15, 'rgba(0, 150, 255, 0.5)',
+              0.25, 'rgba(50, 180, 255, 0.6)',
+              0.35, 'rgba(100, 200, 255, 0.65)',
+              0.45, 'rgba(255, 200, 0, 0.7)',
+              0.55, 'rgba(255, 170, 0, 0.75)',
+              0.65, 'rgba(255, 140, 0, 0.8)',
+              0.75, 'rgba(255, 100, 0, 0.85)',
+              0.82, 'rgba(255, 60, 0, 0.9)',
+              0.9, 'rgba(255, 30, 0, 0.95)',
+              1.0, 'rgba(200, 0, 0, 1)'
+            ],
+            'heatmap-radius': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              7, 12,
+              9, 20,
+              11, 28,
+              13, 38,
+              15, 50,
+              17, 60
+            ],
+            'heatmap-opacity': [
+              'interpolate',
+              ['linear'],
+              ['zoom'],
+              7, 0.55,
+              11, 0.5,
+              15, 0.45
+            ]
+          }
+        });
+      }
+
+      displayedZones.forEach((zone, index) => {
+        const el = document.createElement('div');
+        el.className = 'zone-marker';
+
+        // Marqueurs beaucoup plus petits pour le mode heatmap
+        const size = 16; // Taille fixe très petite
+
+        el.style.cssText = `
+          background-color: ${getSeverityColor(zone.severity)};
+          width: ${size}px;
+          height: ${size}px;
+          border-radius: 50%;
+          cursor: pointer;
+          border: 2px solid white;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+          opacity: 0.9;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          font-size: 0px;
+        `;
+
+        el.innerHTML = `<span style="display: none;">${zone.totalInfractions}</span>`;
+
+        el.addEventListener('mouseenter', () => {
+          el.style.opacity = '1';
+          el.style.boxShadow = `0 3px 8px rgba(0, 0, 0, 0.4)`;
+          el.style.borderWidth = '2px';
+        });
+
+        el.addEventListener('mouseleave', () => {
+          el.style.opacity = '0.9';
+          el.style.boxShadow = `0 2px 6px rgba(0, 0, 0, 0.3)`;
+          el.style.borderWidth = '2px';
+        });
+
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setActiveMarkerIndex(index);
+          setPopupInfo(zone);
+          setSelectedZone(zone.name);
+
+          markerElementsRef.current.forEach((markerEl) => {
+            markerEl.style.opacity = '0.3';
+            markerEl.style.pointerEvents = 'none';
+          });
+        });
+
+        const marker = new mapboxgl.Marker({
+          element: el,
+          anchor: 'center'
+        })
+          .setLngLat([zone.lng, zone.lat])
+          .addTo(mapInstance.current!);
+
+        markersRef.current.push(marker);
+        markerElementsRef.current.push(el);
       });
+    } else {
+      // Vue des caméras de surveillance avec filtres
+      // Supprimer la heatmap si elle existe
+      if (mapInstance.current) {
+        if (mapInstance.current.getLayer('infractions-heatmap')) {
+          mapInstance.current.removeLayer('infractions-heatmap');
+        }
+        if (mapInstance.current.getSource('infractions-heat')) {
+          mapInstance.current.removeSource('infractions-heat');
+        }
+      }
 
-      const marker = new mapboxgl.Marker({
-        element: el,
-        anchor: 'center'
-      })
-        .setLngLat([zone.lng, zone.lat])
-        .addTo(mapInstance.current!);
+      const displayedCameras = camerasData.filter(camera =>
+        (selectedFilter === 'all' || camera.severity === selectedFilter) &&
+        (selectedZone === 'all' || camera.zone === selectedZone) &&
+        (camera.status === 'active' || camera.status === 'maintenance')
+      );
 
-      markersRef.current.push(marker);
-      markerElementsRef.current.push(el);
-    });
-  }, [selectedFilter, selectedZone, mapLoaded, filteredZonesData]);
+      console.log('Adding markers for cameras:', displayedCameras.length);
+
+      displayedCameras.forEach((camera, index) => {
+        const el = document.createElement('div');
+        el.className = 'camera-marker';
+
+        const statusColor = camera.status === 'active' ? '#22c55e' : '#f97316';
+        const size = 45;
+
+        el.style.cssText = `
+          width: ${size}px;
+          height: ${size}px;
+          border-radius: 12px;
+          cursor: pointer;
+          border: 3px solid white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px ${statusColor}88;
+          opacity: 0.9;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          font-size: 16px;
+          transition: opacity 0.3s, box-shadow 0.3s, border-width 0.3s;
+          background: linear-gradient(135deg, ${statusColor} 0%, ${statusColor}dd 100%);
+        `;
+
+        el.innerHTML = `
+          <svg style="width: 24px; height: 24px;" fill="white" stroke="white" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        `;
+
+        el.addEventListener('mouseenter', () => {
+          el.style.opacity = '1';
+          el.style.boxShadow = `0 6px 16px rgba(0, 0, 0, 0.4), 0 0 30px ${statusColor}`;
+          el.style.borderWidth = '4px';
+        });
+
+        el.addEventListener('mouseleave', () => {
+          el.style.opacity = '0.9';
+          el.style.boxShadow = `0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px ${statusColor}88`;
+          el.style.borderWidth = '3px';
+        });
+
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setSelectedCamera(camera);
+          setShowVideoModal(true);
+        });
+
+        const marker = new mapboxgl.Marker({
+          element: el,
+          anchor: 'center'
+        })
+          .setLngLat([camera.lng, camera.lat])
+          .addTo(mapInstance.current!);
+
+        markersRef.current.push(marker);
+        markerElementsRef.current.push(el);
+      });
+    }
+  }, [selectedFilter, selectedZone, mapLoaded, filteredZonesData, mapView, camerasData]);
 
   useEffect(() => {
     if (!mapInstance.current) return;
     if (!popupInfo) {
       markerElementsRef.current.forEach((markerEl) => {
         markerEl.style.opacity = '0.85';
-        markerEl.style.transform = 'scale(1)';
         markerEl.style.pointerEvents = 'auto';
-        markerEl.style.zIndex = '10';
         markerEl.style.boxShadow = `0 4px 12px rgba(0, 0, 0, 0.3)`;
       });
       setActiveMarkerIndex(null);
@@ -818,8 +1087,8 @@ export default function MapPage() {
   const hasNoData = filteredZonesData.every(z => z.totalInfractions === 0);
 
   return (
-    <div className="h-screen flex flex-col lg:flex-row bg-white">
-      <div className="w-full lg:w-80 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-3 sm:p-4 lg:p-6 overflow-y-auto max-h-[40vh] lg:max-h-full">
+    <div className="flex flex-col lg:flex-row h-full w-full bg-white overflow-hidden">
+      <div className={`${sidebarCollapsed ? 'hidden' : 'w-full lg:w-80 flex-shrink-0'} bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-3 sm:p-4 lg:p-6 overflow-y-auto max-h-[40vh] lg:max-h-full transition-all duration-300`}>
         <div className="space-y-4 lg:space-y-6">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-[#3d5a5c] mb-1 sm:mb-2">
@@ -881,41 +1150,88 @@ export default function MapPage() {
           <div className="pt-3 lg:pt-4 space-y-2 lg:space-y-3 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-semibold text-[#3d5a5c] tracking-wider">RÉSULTATS</h3>
-              {startDate && endDate && (
+              {startDate && endDate && mapView === 'infractions' && (
                 <span className="text-xs bg-[#3d5a5c] text-white px-2 py-1 rounded-full font-medium">
                   {startDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })} - {endDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}
                 </span>
               )}
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-3">
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 lg:p-3">
-                <div className="text-xl sm:text-2xl font-bold text-[#3d5a5c]">
-                  {filteredZonesData.filter(zone =>
-                    (selectedFilter === 'all' || zone.severity === selectedFilter) &&
-                    (selectedZone === 'all' || zone.name === selectedZone)
-                  ).reduce((acc, zone) => acc + zone.totalInfractions, 0)}
+            {mapView === 'infractions' ? (
+              <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-3">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-[#3d5a5c]">
+                    {filteredZonesData.filter(zone =>
+                      (selectedFilter === 'all' || zone.severity === selectedFilter) &&
+                      (selectedZone === 'all' || zone.name === selectedZone)
+                    ).reduce((acc, zone) => acc + zone.totalInfractions, 0)}
+                  </div>
+                  <div className="text-xs text-gray-600">Total infractions</div>
                 </div>
-                <div className="text-xs text-gray-600">Total infractions</div>
-              </div>
-              <div className="bg-red-50 border border-red-200 rounded-lg p-2 lg:p-3">
-                <div className="text-xl sm:text-2xl font-bold text-red-600">
-                  {filteredZonesData.filter(z => z.severity === 'critique' && z.totalInfractions > 0).length}
+                <div className="bg-red-50 border border-red-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-red-600">
+                    {filteredZonesData.filter(z => z.severity === 'critique' && z.totalInfractions > 0).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Zones critiques</div>
                 </div>
-                <div className="text-xs text-gray-600">Zones critiques</div>
-              </div>
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 lg:p-3">
-                <div className="text-xl sm:text-2xl font-bold text-orange-600">
-                  {filteredZonesData.filter(z => z.severity === 'moyen' && z.totalInfractions > 0).length}
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-orange-600">
+                    {filteredZonesData.filter(z => z.severity === 'moyen' && z.totalInfractions > 0).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Zones moyennes</div>
                 </div>
-                <div className="text-xs text-gray-600">Zones moyennes</div>
-              </div>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-2 lg:p-3">
-                <div className="text-xl sm:text-2xl font-bold text-green-600">
-                  {filteredZonesData.filter(z => z.severity === 'faible' && z.totalInfractions > 0).length}
+                <div className="bg-green-50 border border-green-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-green-600">
+                    {filteredZonesData.filter(z => z.severity === 'faible' && z.totalInfractions > 0).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Zones faibles</div>
                 </div>
-                <div className="text-xs text-gray-600">Zones faibles</div>
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-3">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-[#3d5a5c]">
+                    {camerasData.filter(camera =>
+                      (selectedFilter === 'all' || camera.severity === selectedFilter) &&
+                      (selectedZone === 'all' || camera.zone === selectedZone) &&
+                      camera.status === 'active'
+                    ).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Caméras actives</div>
+                </div>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-red-600">
+                    {camerasData.filter(c =>
+                      c.severity === 'critique' &&
+                      c.status === 'active' &&
+                      (selectedFilter === 'all' || c.severity === selectedFilter) &&
+                      (selectedZone === 'all' || c.zone === selectedZone)
+                    ).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Caméras critiques</div>
+                </div>
+                <div className="bg-orange-50 border border-orange-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-orange-600">
+                    {camerasData.filter(c =>
+                      c.severity === 'moyen' &&
+                      c.status === 'active' &&
+                      (selectedFilter === 'all' || c.severity === selectedFilter) &&
+                      (selectedZone === 'all' || c.zone === selectedZone)
+                    ).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Caméras moyennes</div>
+                </div>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-2 lg:p-3">
+                  <div className="text-xl sm:text-2xl font-bold text-green-600">
+                    {camerasData.filter(c =>
+                      c.severity === 'faible' &&
+                      (selectedFilter === 'all' || c.severity === selectedFilter) &&
+                      (selectedZone === 'all' || c.zone === selectedZone)
+                    ).length}
+                  </div>
+                  <div className="text-xs text-gray-600">Caméras faibles</div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex lg:flex-col gap-2 lg:space-y-0 pt-3 lg:pt-4">
@@ -958,25 +1274,195 @@ export default function MapPage() {
         </div>
       </div>
 
-      <div ref={mapContainer} className="flex-1 relative">
-        <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 bg-white border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg z-10">
-          <div className="text-xs font-semibold text-[#3d5a5c] mb-2 sm:mb-3 tracking-wider">LÉGENDE</div>
-          <div className="space-y-1.5 sm:space-y-2">
-            <div className="flex items-center space-x-2">
-              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full shadow-sm shadow-red-500/50"></div>
-              <span className="text-xs text-gray-700">Critique</span>
+      <div ref={mapContainer} className="flex-1 min-w-0 min-h-0 relative">
+        {/* Bouton pour toggler le sidebar */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="absolute top-3 sm:top-6 right-3 sm:right-6 bg-white border border-gray-200 rounded-xl shadow-lg z-10 p-2 sm:p-3 hover:bg-gray-50 transition-all"
+          title={sidebarCollapsed ? 'Afficher les filtres' : 'Masquer les filtres'}
+        >
+          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#3d5a5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {sidebarCollapsed ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            )}
+          </svg>
+        </button>
+
+        {/* Toggle pour changer de vue */}
+        <div className="absolute top-3 sm:top-6 left-3 sm:left-6 bg-white border border-gray-200 rounded-xl shadow-lg z-10 overflow-hidden flex">
+          <button
+            onClick={() => setMapView('infractions')}
+            className={`px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold transition-all ${
+              mapView === 'infractions'
+                ? 'bg-[#3d5a5c] text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            Zones d'Infractions
+          </button>
+          <button
+            onClick={() => setMapView('cameras')}
+            className={`px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold transition-all ${
+              mapView === 'cameras'
+                ? 'bg-[#3d5a5c] text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            Caméras de Surveillance
+          </button>
+        </div>
+
+        {/* Légende conditionnelle */}
+        {mapView === 'infractions' ? (
+          <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 bg-white border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg z-10">
+            <div className="text-xs font-semibold text-[#3d5a5c] mb-2 sm:mb-3 tracking-wider">LÉGENDE</div>
+            <div className="space-y-1.5 sm:space-y-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full shadow-sm shadow-red-500/50"></div>
+                <span className="text-xs text-gray-700">Critique</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-orange-500 rounded-full shadow-sm shadow-orange-500/50"></div>
+                <span className="text-xs text-gray-700">Moyen</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full shadow-sm shadow-green-500/50"></div>
+                <span className="text-xs text-gray-700">Faible</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-orange-500 rounded-full shadow-sm shadow-orange-500/50"></div>
-              <span className="text-xs text-gray-700">Moyen</span>
+          </div>
+        ) : (
+          <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 bg-white border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg z-10">
+            <div className="text-xs font-semibold text-[#3d5a5c] mb-2 sm:mb-3 tracking-wider">CAMÉRAS</div>
+            <div className="space-y-1.5 sm:space-y-2">
+              <div className="flex items-center space-x-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full shadow-sm shadow-green-500/50"></div>
+                <span className="text-xs text-gray-700">Active</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-orange-500 rounded-full shadow-sm shadow-orange-500/50"></div>
+                <span className="text-xs text-gray-700">Maintenance</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full shadow-sm shadow-green-500/50"></div>
-              <span className="text-xs text-gray-700">Faible</span>
+          </div>
+        )}
+      </div>
+
+      {/* Modal Vidéo pour les caméras */}
+      {showVideoModal && selectedCamera && (
+        <div
+          className="fixed inset-0 bg-[#00000095] z-50 flex items-center justify-center p-2 sm:p-4"
+          onClick={() => setShowVideoModal(false)}
+        >
+          <div
+            className="bg-white rounded-xl sm:rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl max-h-[95vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#3d5a5c] to-[#2d4a4c] px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm sm:text-xl font-bold text-white flex items-center gap-1 sm:gap-2">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <span className="truncate">{selectedCamera.name}</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-200 mt-1 truncate">
+                  {selectedCamera.id} | Zone: {selectedCamera.zone} | {selectedCamera.infractions} infractions
+                </p>
+              </div>
+              <button
+                onClick={() => setShowVideoModal(false)}
+                className="text-white hover:text-gray-300 transition-colors flex-shrink-0 ml-2"
+              >
+                <svg className="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Video Container */}
+            <div className="bg-black aspect-video relative">
+              {/* Vidéo réelle */}
+              <video
+                className="w-full h-full object-cover"
+                autoPlay
+                controls
+                loop
+                muted
+                controlsList="nodownload nofullscreen noremoteplayback"
+                disablePictureInPicture
+                src="/video_video.mp4"
+              >
+                Votre navigateur ne supporte pas la vidéo.
+              </video>
+
+              {/* Overlay d'informations par-dessus la vidéo */}
+              <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-black/70 backdrop-blur-sm px-2 sm:px-4 py-1 sm:py-2 rounded-lg border border-green-500/50 pointer-events-none">
+                <div className="flex items-center gap-1 sm:gap-2 text-green-400 text-xs sm:text-sm font-mono">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  EN DIRECT
+                </div>
+                <div className="text-white text-[10px] sm:text-xs mt-0.5 sm:mt-1 font-mono">
+                  {new Date().toLocaleTimeString('fr-FR')}
+                </div>
+              </div>
+
+              {/* Informations de la caméra */}
+              <div className="absolute top-2 sm:top-4 right-2 sm:right-4 bg-black/70 backdrop-blur-sm px-2 sm:px-4 py-1 sm:py-2 rounded-lg border border-green-500/50 pointer-events-none">
+                <div className="text-green-400 text-[10px] sm:text-xs font-mono">{selectedCamera.id}</div>
+                <div className="text-white text-[10px] sm:text-xs font-mono">{selectedCamera.zone}</div>
+              </div>
+
+              {/* Détections récentes (simulation) */}
+              <div className="absolute bottom-2 sm:bottom-4 left-2 sm:left-4 right-2 sm:right-4 bg-black/70 backdrop-blur-sm px-2 sm:px-4 py-2 sm:py-3 rounded-lg border border-yellow-500/50 pointer-events-none">
+                <div className="text-yellow-400 text-[10px] sm:text-xs font-semibold mb-1 sm:mb-2">DÉTECTIONS RÉCENTES</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-3 text-[10px] sm:text-xs">
+                  <div className="bg-red-500/20 border border-red-500/50 rounded px-1.5 sm:px-2 py-0.5 sm:py-1">
+                    <div className="text-red-400 font-mono">Excès vitesse</div>
+                    <div className="text-gray-300">Il y a 2 min</div>
+                  </div>
+                  <div className="bg-orange-500/20 border border-orange-500/50 rounded px-1.5 sm:px-2 py-0.5 sm:py-1">
+                    <div className="text-orange-400 font-mono">Stationnement</div>
+                    <div className="text-gray-300">Il y a 8 min</div>
+                  </div>
+                  <div className="bg-yellow-500/20 border border-yellow-500/50 rounded px-1.5 sm:px-2 py-0.5 sm:py-1">
+                    <div className="text-yellow-400 font-mono">Feu rouge</div>
+                    <div className="text-gray-300">Il y a 15 min</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer avec statistiques */}
+            <div className="bg-gray-50 px-3 sm:px-6 py-3 sm:py-4 border-t border-gray-200">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                <div className="text-center">
+                  <div className="text-lg sm:text-2xl font-bold text-[#3d5a5c]">{selectedCamera.infractions}</div>
+                  <div className="text-[10px] sm:text-xs text-gray-600">Infractions</div>
+                </div>
+                <div className="text-center">
+                  <div className={`text-lg sm:text-2xl font-bold ${selectedCamera.variation.includes('+') ? 'text-red-600' : 'text-green-600'}`}>
+                    {selectedCamera.variation}
+                  </div>
+                  <div className="text-[10px] sm:text-xs text-gray-600">Variation</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg sm:text-2xl font-bold text-green-600">
+                    <div className="flex items-center justify-center gap-1">
+                      <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${selectedCamera.status === 'active' ? 'bg-green-500 animate-pulse' : 'bg-orange-500'}`}></div>
+                      <span className="text-xs sm:text-2xl">{selectedCamera.status === 'active' ? 'Actif' : 'Maintenance'}</span>
+                    </div>
+                  </div>
+                  <div className="text-[10px] sm:text-xs text-gray-600">Statut</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

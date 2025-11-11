@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Download, Calendar, FileText, CreditCard, Smartphone, Banknote, Filter, X, Eye, Send } from 'lucide-react';
+import Image from 'next/image';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import CustomSelect from '@/app/components/ui/CustomSelect';
@@ -64,18 +65,45 @@ export default function PaymentsPage() {
   const totalRecouvrements = payments.reduce((acc, p) => acc + p.montant, 0);
   const totalPaiements = payments.length;
 
-  // Modes de paiement
+  // Modes de paiement avec totaux
   const modePaiementStats = [
-    { mode: 'Wave', count: payments.filter(p => p.mode === 'Wave').length },
-    { mode: 'Orange Money', count: payments.filter(p => p.mode === 'Orange Money').length },
-    { mode: 'Free Money', count: payments.filter(p => p.mode === 'Free Money').length },
+    {
+      mode: 'Wave',
+      count: payments.filter(p => p.mode === 'Wave').length,
+      total: payments.filter(p => p.mode === 'Wave').reduce((acc, p) => acc + p.montant, 0)
+    },
+    {
+      mode: 'Orange Money',
+      count: payments.filter(p => p.mode === 'Orange Money').length,
+      total: payments.filter(p => p.mode === 'Orange Money').reduce((acc, p) => acc + p.montant, 0)
+    },
+    {
+      mode: 'Free Money',
+      count: payments.filter(p => p.mode === 'Free Money').length,
+      total: payments.filter(p => p.mode === 'Free Money').reduce((acc, p) => acc + p.montant, 0)
+    },
   ];
 
   const getModeIcon = (mode: string) => {
     switch (mode) {
-      case 'Wave': return <Smartphone className="w-4 h-4" />;
-      case 'Orange Money': return <Smartphone className="w-4 h-4" />;
-      case 'Free Money': return <Smartphone className="w-4 h-4" />;
+      case 'Wave':
+        return <Image src="/wave.png" alt="Wave" width={24} height={24} className="object-contain" />;
+      case 'Orange Money':
+        return <Image src="/orange_money_logo.png" alt="Orange Money" width={24} height={24} className="object-contain" />;
+      case 'Free Money':
+        return <Image src="/yas_money_logo.png" alt="Free Money" width={24} height={24} className="object-contain" />;
+      default: return null;
+    }
+  };
+
+  const getModeLogo = (mode: string, size: number = 40) => {
+    switch (mode) {
+      case 'Wave':
+        return <Image src="/wave.png" alt="Wave" width={size} height={size} className="object-contain" />;
+      case 'Orange Money':
+        return <Image src="/orange_money_logo.png" alt="Orange Money" width={size} height={size} className="object-contain" />;
+      case 'Free Money':
+        return <Image src="/yas_money_logo.png" alt="Free Money" width={size} height={size} className="object-contain" />;
       default: return null;
     }
   };
@@ -303,15 +331,33 @@ export default function PaymentsPage() {
 
       {/* Payment Methods Stats */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h3 className="text-xl font-bold text-[#3d5a5c] mb-4">Modes de Paiement</h3>
-        <div className="grid grid-cols-3 gap-4">
+        <h3 className="text-xl font-bold text-[#3d5a5c] mb-4">Modes de Paiement - Totaux</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {modePaiementStats.map((item, index) => (
-            <div key={index} className="text-center p-4 border border-gray-200 rounded-lg">
-              <div className="flex justify-center mb-2">
-                {getModeIcon(item.mode)}
+            <div key={index} className="p-5 border-2 border-gray-200 rounded-xl hover:border-[#3d5a5c] transition-all hover:shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center p-2 border border-gray-200">
+                    {getModeLogo(item.mode, 40)}
+                  </div>
+                  <div className="font-semibold text-gray-900">{item.mode}</div>
+                </div>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{item.count}</div>
-              <div className="text-sm text-gray-600 mt-1">{item.mode}</div>
+
+              <div className="space-y-2">
+                <div>
+                  <div className="text-xs text-gray-500 mb-1">Nombre de paiements</div>
+                  <div className="text-2xl font-bold text-gray-900">{item.count}</div>
+                </div>
+
+                <div className="pt-2 border-t border-gray-200">
+                  <div className="text-xs text-gray-500 mb-1">Total payé</div>
+                  <div className="text-xl font-bold text-green-600">
+                    {(item.total / 1000000).toFixed(2)}M
+                  </div>
+                  <div className="text-xs text-gray-500 mt-0.5">FCFA</div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -453,7 +499,9 @@ export default function PaymentsPage() {
                   </td>
                   <td className="py-3 px-4">
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      {getModeIcon(payment.mode)}
+                      <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1 border border-gray-200">
+                        {getModeIcon(payment.mode)}
+                      </div>
                       {payment.mode}
                     </div>
                   </td>
@@ -518,7 +566,9 @@ export default function PaymentsPage() {
               <div>
                 <div className="text-xs text-gray-500 mb-1">Mode</div>
                 <div className="flex items-center gap-2 text-sm text-gray-700">
-                  {getModeIcon(payment.mode)}
+                  <div className="w-8 h-8 bg-white rounded flex items-center justify-center p-1 border border-gray-200">
+                    {getModeIcon(payment.mode)}
+                  </div>
                   {payment.mode}
                 </div>
               </div>

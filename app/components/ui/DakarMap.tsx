@@ -52,47 +52,133 @@ export default function DakarMapbox({ zones = [] }: Props) {
       }
     });
 
-    // Créer des marqueurs circulaires pour chaque zone
-    mergedZones.forEach((zone) => {
-      // Créer un élément HTML pour le marqueur circulaire
-      const el = document.createElement('div');
-      el.className = 'custom-marker';
-      el.style.width = '16px';
-      el.style.height = '16px';
-      el.style.borderRadius = '50%';
-      el.style.backgroundColor = '#3d5a5c';
-      el.style.border = '2px solid #ffffff';
-      el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.2)';
-      el.style.cursor = 'pointer';
-      el.style.transition = 'all 0.2s';
+    // Attendre que la carte soit chargée pour ajouter la heatmap
+    mapInstance.on('load', () => {
+      // Créer des points de densité basés sur les infractions
+      const heatmapFeatures: any[] = [];
 
-      // Animation au survol
-      el.addEventListener('mouseenter', () => {
-        el.style.width = '20px';
-        el.style.height = '20px';
-        el.style.backgroundColor = '#2d4a4c';
+      mergedZones.forEach(zone => {
+        // Générer des points proportionnellement aux infractions
+        // Densité minimale pour zone rouge très petite
+        const basePoints = Math.floor(zone.infractions * 1.5); // Multiplier par 1.5 seulement
+        const pointsCount = Math.max(15, basePoints); // Minimum 15 points par zone
+
+        for (let i = 0; i < pointsCount; i++) {
+          // Distribution gaussienne pour concentration au centre avec dispersion naturelle
+          const randomAngle = Math.random() * 2 * Math.PI;
+
+          // Distribution gaussienne pour un effet plus naturel
+          const u1 = Math.random();
+          const u2 = Math.random();
+          const gaussianRandom = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);
+
+          // Distance avec distribution gaussienne (70% des points dans un rayon de 0.01°)
+          const randomDistance = Math.abs(gaussianRandom) * 0.003; // ~300m concentration ultra-compacte
+
+          const offsetLng = Math.cos(randomAngle) * randomDistance;
+          const offsetLat = Math.sin(randomAngle) * randomDistance;
+
+          // Ajouter un poids proportionnel au nombre d'infractions
+          heatmapFeatures.push({
+            type: 'Feature',
+            properties: {
+              infractions: zone.infractions,
+              zone: zone.zone,
+              weight: Math.min(zone.infractions / 100, 1) // Poids normalisé
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [zone.lng + offsetLng, zone.lat + offsetLat]
+            }
+          });
+        }
       });
 
-      el.addEventListener('mouseleave', () => {
-        el.style.width = '16px';
-        el.style.height = '16px';
-        el.style.backgroundColor = '#3d5a5c';
+      const heatmapData: GeoJSON.FeatureCollection = {
+        type: 'FeatureCollection',
+        features: heatmapFeatures
+      };
+
+      // Ajouter la source de données
+      mapInstance.addSource('infractions-heat', {
+        type: 'geojson',
+        data: heatmapData
       });
 
-      // Événement de clic pour ouvrir la modal vidéo
-      el.addEventListener('click', () => {
-        setSelectedZone(zone);
-        setShowVideoModal(true);
+      // Ajouter la couche heatmap avec configuration professionnelle optimisée
+      mapInstance.addLayer({
+        id: 'infractions-heatmap',
+        type: 'heatmap',
+        source: 'infractions-heat',
+        maxzoom: 18,
+        paint: {
+          // Poids dynamique basé sur les propriétés des points
+          'heatmap-weight': [
+            'interpolate',
+            ['exponential', 2],
+            ['get', 'infractions'],
+            0, 0,
+            10, 0.2,
+            30, 0.5,
+            50, 0.8,
+            85, 1
+          ],
+
+          // Intensité très faible pour zone rouge minimale
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 0.5,
+            9, 0.8,
+            12, 1.0,
+            15, 1.2
+          ],
+
+          // Gradient thermique optimisé : Bleu → Orange → Rouge
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0, 'rgba(0, 0, 0, 0)',              // Transparent (pas de données)
+            0.05, 'rgba(0, 100, 255, 0.3)',     // Bleu profond (très faible)
+            0.15, 'rgba(0, 150, 255, 0.5)',     // Bleu vif (faible densité - zone bien)
+            0.25, 'rgba(50, 180, 255, 0.6)',    // Bleu clair
+            0.35, 'rgba(100, 200, 255, 0.65)',  // Bleu très clair
+            0.45, 'rgba(255, 200, 0, 0.7)',     // Jaune-orange (transition)
+            0.55, 'rgba(255, 170, 0, 0.75)',    // Orange clair (densité moyenne)
+            0.65, 'rgba(255, 140, 0, 0.8)',     // Orange moyen
+            0.75, 'rgba(255, 100, 0, 0.85)',    // Orange foncé
+            0.82, 'rgba(255, 60, 0, 0.9)',      // Rouge-orange (haute densité)
+            0.9, 'rgba(255, 30, 0, 0.95)',      // Rouge vif
+            1.0, 'rgba(200, 0, 0, 1)'           // Rouge intense (zone critique)
+          ],
+
+          // Rayon très petit pour zone rouge ultra-compacte
+          'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7, 12,
+            9, 20,
+            11, 28,
+            13, 38,
+            15, 50,
+            17, 60
+          ],
+
+          // Opacité faible pour zone rouge très discrète
+          'heatmap-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7, 0.55,
+            11, 0.5,
+            15, 0.45
+          ]
+        }
       });
 
-      // Créer le marqueur avec l'élément personnalisé
-      const marker = new mapboxgl.Marker({
-        element: el,
-        anchor: 'center'
-      })
-        .setLngLat([zone.lng, zone.lat])
-        
-        .addTo(mapInstance);
     });
 
     setMap(mapInstance);

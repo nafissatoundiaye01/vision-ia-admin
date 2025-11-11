@@ -54,15 +54,19 @@ function createWindow() {
   console.log("Attempting to create BrowserWindow...");
 
   mainWindow = new BrowserWindow({
-    fullscreen: true,
-    autoHideMenuBar: true,
-    width: 1280,
-    height: 800,
+    width: 1400,
+    height: 900,
+    minWidth: 1024,
+    minHeight: 768,
     show: false, // Ne pas afficher avant que ce soit prêt
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
     },
+    backgroundColor: '#ffffff',
+    title: 'Vision IA - Admin Dashboard',
+    icon: path.join(__dirname, 'public', 'favicon.ico'), // Si vous avez un icône
   });
 
   // Désactiver le menu de l'application
