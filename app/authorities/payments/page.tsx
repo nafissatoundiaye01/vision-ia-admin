@@ -289,12 +289,12 @@ export default function PaymentsPage() {
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#3d5a5c]">Suivi des Paiements</h1>
+            <h1 className="text-3xl font-bold text-[#00124c]">Suivi des Paiements</h1>
             <p className="text-gray-600 mt-1">Gérez et suivez tous les paiements d'infractions</p>
           </div>
           <button
             onClick={handleExportPDF}
-            className="px-4 py-2.5 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-xl font-medium transition-all flex items-center gap-2 shadow-sm"
+            className="px-4 py-2.5 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-xl font-medium transition-all flex items-center gap-2 shadow-sm"
           >
             <Download className="w-5 h-5" />
             Exporter en PDF
@@ -318,23 +318,23 @@ export default function PaymentsPage() {
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
             <div className="text-sm text-gray-600 font-medium">Total Paiements</div>
-            <div className="w-12 h-12 bg-[#3d5a5c]/10 rounded-lg flex items-center justify-center">
-              <svg className="w-7 h-7 text-[#3d5a5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-[#00124c]/10 rounded-lg flex items-center justify-center">
+              <svg className="w-7 h-7 text-[#00124c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
           </div>
-          <div className="text-4xl font-bold text-[#3d5a5c]">{totalPaiements}</div>
+          <div className="text-4xl font-bold text-[#00124c]">{totalPaiements}</div>
           <div className="text-sm text-gray-500 mt-1">Paiements effectués</div>
         </div>
       </div>
 
       {/* Payment Methods Stats */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h3 className="text-xl font-bold text-[#3d5a5c] mb-4">Modes de Paiement - Totaux</h3>
+        <h3 className="text-xl font-bold text-[#00124c] mb-4">Modes de Paiement - Totaux</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {modePaiementStats.map((item, index) => (
-            <div key={index} className="p-5 border-2 border-gray-200 rounded-xl hover:border-[#3d5a5c] transition-all hover:shadow-lg">
+            <div key={index} className="p-5 border-2 border-gray-200 rounded-xl hover:border-[#00124c] transition-all hover:shadow-lg">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center p-2 border border-gray-200">
@@ -374,7 +374,7 @@ export default function PaymentsPage() {
                 placeholder="Rechercher par ID, plaque, type, référence..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
               />
               <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
             </div>
@@ -384,13 +384,13 @@ export default function PaymentsPage() {
           <button
             onClick={() => setShowFilters(!showFilters)}
             className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 ${
-              showFilters ? 'bg-[#3d5a5c] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              showFilters ? 'bg-[#00124c] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             <Filter className="w-4 h-4" />
             Filtres
             {activeFiltersCount > 0 && (
-              <span className="bg-white text-[#3d5a5c] text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-white text-[#00124c] text-xs font-bold px-2 py-0.5 rounded-full">
                 {activeFiltersCount}
               </span>
             )}
@@ -424,7 +424,7 @@ export default function PaymentsPage() {
                   type="date"
                   value={filterDateDebut}
                   onChange={(e) => setFilterDateDebut(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 />
               </div>
 
@@ -435,7 +435,7 @@ export default function PaymentsPage() {
                   type="date"
                   value={filterDateFin}
                   onChange={(e) => setFilterDateFin(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 />
               </div>
             </div>
@@ -511,7 +511,7 @@ export default function PaymentsPage() {
                   <td className="py-3 px-4">
                     <button
                       onClick={() => router.push(`/authorities/payments/${payment.id}`)}
-                      className="p-1.5 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg transition-colors"
+                      className="p-1.5 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg transition-colors"
                       title="Voir les détails"
                     >
                       <Eye className="w-4 h-4" />
@@ -559,7 +559,7 @@ export default function PaymentsPage() {
 
             <div className="mt-2">
               <div className="text-xs text-gray-500 mb-1">Réf. Infraction</div>
-              <div className="text-sm font-mono font-semibold text-[#3d5a5c]">{payment.referenceInfraction}</div>
+              <div className="text-sm font-mono font-semibold text-[#00124c]">{payment.referenceInfraction}</div>
             </div>
 
             <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
@@ -574,7 +574,7 @@ export default function PaymentsPage() {
               </div>
               <button
                 onClick={() => router.push(`/authorities/payments/${payment.id}`)}
-                className="p-2 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg transition-colors"
+                className="p-2 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg transition-colors"
               >
                 <Eye className="w-4 h-4" />
               </button>

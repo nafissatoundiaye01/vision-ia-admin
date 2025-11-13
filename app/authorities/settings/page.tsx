@@ -351,7 +351,7 @@ export default function SettingsPage() {
                   placeholder="Confirmez le nouveau mot de passe"
                 />
               </div>
-              <button className="w-full px-6 py-3 bg-[#3d5a5c] text-white rounded-xl font-semibold hover:bg-[#2d4a4c] transition-colors">
+              <button className="w-full px-6 py-3 bg-[#00124c] text-white rounded-xl font-semibold hover:bg-[#2d4a4c] transition-colors">
                 Mettre à Jour le Mot de Passe
               </button>
             </div>
@@ -361,7 +361,7 @@ export default function SettingsPage() {
         {/* Quick Actions & Info */}
         <div className="space-y-6">
           {/* Account Info */}
-          <div className="bg-gradient-to-br from-[#3d5a5c] to-[#2d4a4c] rounded-2xl shadow-xl p-6 text-white">
+          <div className="bg-gradient-to-br from-[#00124c] to-[#2d4a4c] rounded-2xl shadow-xl p-6 text-white">
             <h3 className="text-lg font-bold mb-4">Statut du Compte</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">

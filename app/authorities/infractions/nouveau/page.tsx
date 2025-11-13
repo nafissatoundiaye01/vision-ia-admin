@@ -15,7 +15,7 @@ const CustomSelect = ({ value, onChange, options, placeholder, label }: any) => 
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-left focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c] flex items-center justify-between hover:border-gray-400 transition-colors"
+          className="w-full px-4 py-3 bg-white border-2 border-gray-300 rounded-xl text-left focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c] flex items-center justify-between hover:border-gray-400 transition-colors"
         >
           <span className={!value ? 'text-gray-400' : 'text-gray-900'}>
             {selectedOption?.label || placeholder}
@@ -131,7 +131,7 @@ export default function NewInfractionPage() {
         <div className="mb-8">
           <button
             onClick={() => router.push('/authorities/infractions')}
-            className="flex items-center gap-2 text-gray-600 hover:text-[#3d5a5c] transition-colors mb-4"
+            className="flex items-center gap-2 text-gray-600 hover:text-[#00124c] transition-colors mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="font-medium">Retour à la liste</span>
@@ -168,7 +168,7 @@ export default function NewInfractionPage() {
                         required
                         value={formData.date}
                         onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                       />
                     </div>
                   </div>
@@ -184,7 +184,7 @@ export default function NewInfractionPage() {
                         required
                         value={formData.heure}
                         onChange={(e) => setFormData({ ...formData, heure: e.target.value })}
-                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                       />
                     </div>
                   </div>
@@ -211,7 +211,7 @@ export default function NewInfractionPage() {
                         value={formData.lieu}
                         onChange={(e) => setFormData({ ...formData, lieu: e.target.value })}
                         placeholder="Ex: Dakar Plateau"
-                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                       />
                     </div>
                   </div>
@@ -228,7 +228,7 @@ export default function NewInfractionPage() {
                         value={formData.plaque}
                         onChange={(e) => setFormData({ ...formData, plaque: e.target.value.toUpperCase() })}
                         placeholder="Ex: DK-1234-AB"
-                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c] uppercase"
+                        className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c] uppercase"
                       />
                     </div>
                   </div>
@@ -243,7 +243,7 @@ export default function NewInfractionPage() {
                       value={formData.montant}
                       onChange={(e) => setFormData({ ...formData, montant: e.target.value })}
                       placeholder="Ex: 25000"
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                     />
                   </div>
 
@@ -257,7 +257,7 @@ export default function NewInfractionPage() {
                       value={formData.agent}
                       onChange={(e) => setFormData({ ...formData, agent: e.target.value })}
                       placeholder="Ex: Agent Diop"
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                     />
                   </div>
 
@@ -270,7 +270,7 @@ export default function NewInfractionPage() {
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       placeholder="Détails supplémentaires sur l'infraction..."
                       rows={4}
-                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c] resize-none"
+                      className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c] resize-none"
                     />
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function NewInfractionPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#3d5a5c] hover:bg-gray-50 transition-all">
+                  <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#00124c] hover:bg-gray-50 transition-all">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <Upload className="w-10 h-10 text-gray-400 mb-3" />
                       <p className="mb-2 text-sm text-gray-500">
@@ -357,7 +357,7 @@ export default function NewInfractionPage() {
                 <div className="space-y-3">
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#3d5a5c] text-white rounded-xl hover:bg-[#2d4a4c] transition-colors font-medium"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00124c] text-white rounded-xl hover:bg-[#2d4a4c] transition-colors font-medium"
                   >
                     <Save className="w-5 h-5" />
                     <span>Enregistrer</span>

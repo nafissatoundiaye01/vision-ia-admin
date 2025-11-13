@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import SenegalFlag, { SenegalFlagMini } from '../ui/SenegalFlag';
 
 interface MenuItem {
   icon: string;
@@ -121,7 +122,7 @@ export default function Sidebar() {
       {/* Mobile Menu Button - Visible uniquement sur mobile/tablette */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-[#3d5a5c] rounded-full flex items-center justify-center shadow-lg"
+        className="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-[#00124c] rounded-full flex items-center justify-center shadow-lg"
       >
         {isMobileOpen ? (
           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +146,7 @@ export default function Sidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          h-screen flex flex-col transition-all duration-300 relative bg-[#3d5a5c]
+          h-screen flex flex-col transition-all duration-300 relative bg-[#00124c]
           rounded-tr-3xl rounded-br-3xl
           overflow-y-auto overflow-x-hidden
 
@@ -184,14 +185,23 @@ export default function Sidebar() {
         {/* User Profile */}
         <div className={`${isCollapsed ? 'hidden lg:hidden' : 'block'} p-4 sm:p-6 pb-3 sm:pb-4`}>
           <div className="flex flex-col items-center mb-2">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center mb-3 shadow-lg overflow-hidden">
-              <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 text-slate-600" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
+            <div className="relative mb-3">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 text-slate-600" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+              </div>
+              {/* Mini drapeau sur l'avatar */}
+              <div className="absolute bottom-0 right-0 w-5 h-5 sm:w-6 sm:h-6 bg-white rounded-full p-0.5 shadow-lg">
+                <SenegalFlagMini className="w-full h-full rounded-full" />
+              </div>
             </div>
             <div className="text-center">
-              <h2 className="font-bold text-sm sm:text-base tracking-wide text-white">Pape Serigne Diouf</h2>
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <h2 className="font-bold text-sm sm:text-base tracking-wide text-white">Pape Serigne Diouf</h2>
+              </div>
               <p className="text-xs text-slate-300">Police Centrale / Dakar</p>
+              <p className="text-xs text-slate-400 mt-0.5">🇸🇳 Sénégal</p>
             </div>
           </div>
         </div>
@@ -217,9 +227,9 @@ export default function Sidebar() {
           >
             <div className="absolute -left-4 top-0 bottom-0 w-1 bg-[#d4a574] rounded-r-full"></div>
             <div className="absolute -top-4 right-0 w-4 h-4 bg-white"></div>
-            <div className="absolute -top-4 right-0 w-4 h-4 bg-[#3d5a5c] rounded-br-full"></div>
+            <div className="absolute -top-4 right-0 w-4 h-4 bg-[#00124c] rounded-br-full"></div>
             <div className="absolute -bottom-4 right-0 w-4 h-4 bg-white"></div>
-            <div className="absolute -bottom-4 right-0 w-4 h-4 bg-[#3d5a5c] rounded-tr-full"></div>
+            <div className="absolute -bottom-4 right-0 w-4 h-4 bg-[#00124c] rounded-tr-full"></div>
           </div>
 
           {menuItems.map((item) => (
@@ -228,7 +238,7 @@ export default function Sidebar() {
               href={item.href}
               className={`flex items-center space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 my-1 transition-colors duration-300 ease-in-out text-xs sm:text-sm font-medium relative rounded-lg z-10 ${
                 isActive(item.href)
-                  ? 'active-item text-[#3d5a5c]'
+                  ? 'active-item text-[#00124c]'
                   : 'text-slate-300 hover:bg-slate-700/30'
               }`}
             >
@@ -238,11 +248,12 @@ export default function Sidebar() {
           ))}
         </nav>
 
-        {/* Active Users & Map */}
+        {/* Drapeau du Sénégal */}
         <div className={`${isCollapsed ? 'hidden lg:hidden' : 'block'} px-3 sm:px-4 py-3 sm:py-4 border-t border-neutral-500/30`}>
-          <div className="rounded-xl overflow-hidden" style={{ height: '20vh' }}>
-            <img src="/senegal.png" alt="Carte du Sénégal" className="w-full h-full object-contain" />
+          <div className="rounded-xl overflow-hidden bg-[#00000000] p-3 flex items-center justify-center" style={{ height: '12vh' }}>
+            <SenegalFlag className="w-full h-full rounded-lg shadow-lg" />
           </div>
+          <p className="text-center text-xs text-slate-300 mt-2 font-medium tracking-wide">République du Sénégal</p>
         </div>
       </aside>
     </>

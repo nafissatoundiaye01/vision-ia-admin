@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import CustomSelect from '@/app/components/ui/CustomSelect';
 import DateRangePicker from '@/app/components/ui/DateRangePicker';
+import { SenegalFlagMini } from '@/app/components/ui/SenegalFlag';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || '';
 
@@ -28,7 +29,7 @@ if (typeof document !== 'undefined') {
     }
     .zone-popup .mapboxgl-popup-close-button:hover {
       background-color: #f3f4f6;
-      color: #3d5a5c;
+      color: #00124c;
     }
     .mapboxgl-marker {
       z-index: 10;
@@ -1031,7 +1032,7 @@ export default function MapPage() {
 
     const popupContent = `
       <div style="padding: 12px; min-width: 250px;">
-        <div style="font-size: 16px; font-weight: bold; color: #3d5a5c; margin-bottom: 8px;">
+        <div style="font-size: 16px; font-weight: bold; color: #00124c; margin-bottom: 8px;">
           ${popupInfo.name}
         </div>
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
@@ -1049,7 +1050,7 @@ export default function MapPage() {
           </div>
         </div>
         <div style="border-top: 1px solid #e5e7eb; padding-top: 8px;">
-          <div style="font-size: 11px; font-weight: 600; color: #3d5a5c; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+          <div style="font-size: 11px; font-weight: 600; color: #00124c; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
             Types fréquents
           </div>
           ${popupInfo.infractions.map((inf, index) => `
@@ -1091,14 +1092,17 @@ export default function MapPage() {
       <div className={`${sidebarCollapsed ? 'hidden' : 'w-full lg:w-80 flex-shrink-0'} bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-3 sm:p-4 lg:p-6 overflow-y-auto max-h-[40vh] lg:max-h-full transition-all duration-300`}>
         <div className="space-y-4 lg:space-y-6">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-[#3d5a5c] mb-1 sm:mb-2">
-              Filtres
-            </h2>
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#00124c]">
+                Filtres
+              </h2>
+              <SenegalFlagMini className="shadow-md rounded" />
+            </div>
             <p className="text-xs sm:text-sm text-gray-600">Affinez la visualisation</p>
           </div>
 
           <div className="space-y-2 lg:space-y-3">
-            <label className="text-xs sm:text-sm font-semibold text-[#3d5a5c] block">Niveau de criticité</label>
+            <label className="text-xs sm:text-sm font-semibold text-[#00124c] block">Niveau de criticité</label>
             <div className="flex lg:flex-col lg:space-y-2 gap-2 lg:gap-0 overflow-x-auto lg:overflow-visible">
               {['all', 'critique', 'moyen', 'faible'].map(level => (
                 <button
@@ -1106,7 +1110,7 @@ export default function MapPage() {
                   onClick={() => setSelectedFilter(level as any)}
                   className={`flex-shrink-0 lg:w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-left font-medium transition-all text-xs sm:text-sm ${
                     selectedFilter === level
-                      ? 'bg-[#3d5a5c] text-white shadow-lg'
+                      ? 'bg-[#00124c] text-white shadow-lg'
                       : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
                   }`}
                 >
@@ -1117,7 +1121,7 @@ export default function MapPage() {
           </div>
 
           <div className="space-y-2 lg:space-y-3">
-            <label className="text-xs sm:text-sm font-semibold text-[#3d5a5c] block">Zone géographique</label>
+            <label className="text-xs sm:text-sm font-semibold text-[#00124c] block">Zone géographique</label>
             <CustomSelect
               value={selectedZone}
               onChange={setSelectedZone}
@@ -1130,7 +1134,7 @@ export default function MapPage() {
           </div>
 
           <div className="space-y-2 lg:space-y-3">
-            <label className="text-xs sm:text-sm font-semibold text-[#3d5a5c] block">Période temporelle</label>
+            <label className="text-xs sm:text-sm font-semibold text-[#00124c] block">Période temporelle</label>
             <DateRangePicker
               startDate={startDate}
               endDate={endDate}
@@ -1149,9 +1153,9 @@ export default function MapPage() {
 
           <div className="pt-3 lg:pt-4 space-y-2 lg:space-y-3 border-t border-gray-200">
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-semibold text-[#3d5a5c] tracking-wider">RÉSULTATS</h3>
+              <h3 className="text-xs font-semibold text-[#00124c] tracking-wider">RÉSULTATS</h3>
               {startDate && endDate && mapView === 'infractions' && (
-                <span className="text-xs bg-[#3d5a5c] text-white px-2 py-1 rounded-full font-medium">
+                <span className="text-xs bg-[#00124c] text-white px-2 py-1 rounded-full font-medium">
                   {startDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })} - {endDate.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}
                 </span>
               )}
@@ -1159,7 +1163,7 @@ export default function MapPage() {
             {mapView === 'infractions' ? (
               <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-3">
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 lg:p-3">
-                  <div className="text-xl sm:text-2xl font-bold text-[#3d5a5c]">
+                  <div className="text-xl sm:text-2xl font-bold text-[#00124c]">
                     {filteredZonesData.filter(zone =>
                       (selectedFilter === 'all' || zone.severity === selectedFilter) &&
                       (selectedZone === 'all' || zone.name === selectedZone)
@@ -1189,7 +1193,7 @@ export default function MapPage() {
             ) : (
               <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 lg:gap-3">
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 lg:p-3">
-                  <div className="text-xl sm:text-2xl font-bold text-[#3d5a5c]">
+                  <div className="text-xl sm:text-2xl font-bold text-[#00124c]">
                     {camerasData.filter(camera =>
                       (selectedFilter === 'all' || camera.severity === selectedFilter) &&
                       (selectedZone === 'all' || camera.zone === selectedZone) &&
@@ -1238,7 +1242,7 @@ export default function MapPage() {
             <button 
               onClick={handleExportPDF}
               disabled={isExporting}
-              className={`flex-1 lg:w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-xl font-medium transition-all shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2 ${
+              className={`flex-1 lg:w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-xl font-medium transition-all shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2 ${
                 isExporting ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
@@ -1281,7 +1285,7 @@ export default function MapPage() {
           className="absolute top-3 sm:top-6 right-3 sm:right-6 bg-white border border-gray-200 rounded-xl shadow-lg z-10 p-2 sm:p-3 hover:bg-gray-50 transition-all"
           title={sidebarCollapsed ? 'Afficher les filtres' : 'Masquer les filtres'}
         >
-          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#3d5a5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#00124c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {sidebarCollapsed ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             ) : (
@@ -1296,7 +1300,7 @@ export default function MapPage() {
             onClick={() => setMapView('infractions')}
             className={`px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold transition-all ${
               mapView === 'infractions'
-                ? 'bg-[#3d5a5c] text-white'
+                ? 'bg-[#00124c] text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-50'
             }`}
           >
@@ -1306,7 +1310,7 @@ export default function MapPage() {
             onClick={() => setMapView('cameras')}
             className={`px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold transition-all ${
               mapView === 'cameras'
-                ? 'bg-[#3d5a5c] text-white'
+                ? 'bg-[#00124c] text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-50'
             }`}
           >
@@ -1317,7 +1321,7 @@ export default function MapPage() {
         {/* Légende conditionnelle */}
         {mapView === 'infractions' ? (
           <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 bg-white border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg z-10">
-            <div className="text-xs font-semibold text-[#3d5a5c] mb-2 sm:mb-3 tracking-wider">LÉGENDE</div>
+            <div className="text-xs font-semibold text-[#00124c] mb-2 sm:mb-3 tracking-wider">LÉGENDE</div>
             <div className="space-y-1.5 sm:space-y-2">
               <div className="flex items-center space-x-2">
                 <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full shadow-sm shadow-red-500/50"></div>
@@ -1335,7 +1339,7 @@ export default function MapPage() {
           </div>
         ) : (
           <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 bg-white border border-gray-200 rounded-xl p-3 sm:p-4 shadow-lg z-10">
-            <div className="text-xs font-semibold text-[#3d5a5c] mb-2 sm:mb-3 tracking-wider">CAMÉRAS</div>
+            <div className="text-xs font-semibold text-[#00124c] mb-2 sm:mb-3 tracking-wider">CAMÉRAS</div>
             <div className="space-y-1.5 sm:space-y-2">
               <div className="flex items-center space-x-2">
                 <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full shadow-sm shadow-green-500/50"></div>
@@ -1361,7 +1365,7 @@ export default function MapPage() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#3d5a5c] to-[#2d4a4c] px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
+            <div className="bg-gradient-to-r from-[#00124c] to-[#2d4a4c] px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm sm:text-xl font-bold text-white flex items-center gap-1 sm:gap-2">
                   <svg className="w-4 h-4 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1440,7 +1444,7 @@ export default function MapPage() {
             <div className="bg-gray-50 px-3 sm:px-6 py-3 sm:py-4 border-t border-gray-200">
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 <div className="text-center">
-                  <div className="text-lg sm:text-2xl font-bold text-[#3d5a5c]">{selectedCamera.infractions}</div>
+                  <div className="text-lg sm:text-2xl font-bold text-[#00124c]">{selectedCamera.infractions}</div>
                   <div className="text-[10px] sm:text-xs text-gray-600">Infractions</div>
                 </div>
                 <div className="text-center">

@@ -66,7 +66,7 @@ export default function CustomSelect({ value, onChange, options, placeholder = '
               }}
               className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
                 option.value === value
-                  ? 'bg-[#3d5a5c] text-white font-medium'
+                  ? 'bg-[#00124c] text-white font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
               }`}
             >

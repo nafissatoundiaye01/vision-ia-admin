@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import DakarMap from '../components/ui/DakarMap';
 import DakarMapbox from '../components/ui/DakarMap';
 import CustomSelect from '../components/ui/CustomSelect';
+import { SenegalFlagMini } from '../components/ui/SenegalFlag';
 
 export default function DashboardPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('today');
@@ -197,9 +198,12 @@ export default function DashboardPage() {
       <div className="mb-4 md:mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#3d5a5c]">Tableau de Bord</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#00124c]">Tableau de Bord</h1>
+              <SenegalFlagMini className="shadow-md rounded" />
+            </div>
             <p className="text-sm sm:text-base text-gray-600 mt-1">
-              Vue d'ensemble du système de gestion des infractions - <span className="font-semibold text-[#3d5a5c]">{getPeriodLabel()}</span>
+              Vue d'ensemble du système de gestion des infractions - <span className="font-semibold text-[#00124c]">{getPeriodLabel()}</span>
             </p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
@@ -224,10 +228,10 @@ export default function DashboardPage() {
         {kpis.map((kpi, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5 md:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all"
+            className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5 md:p-6 hover:border-[#00124c] hover:shadow-lg transition-all"
           >
             <div className="flex items-center justify-between mb-3 md:mb-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center text-white shadow-sm">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#00124c] rounded-lg flex items-center justify-center text-white shadow-sm">
                 {getIcon(kpi.icon)}
               </div>
               <span className={`text-xs sm:text-sm font-semibold ${
@@ -239,7 +243,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <h3 className="text-xs sm:text-sm text-gray-600 mb-1">{kpi.label}</h3>
-            <p className="text-xl sm:text-xl md:text-2xl font-bold text-[#3d5a5c]">{kpi.value}</p>
+            <p className="text-xl sm:text-xl md:text-2xl font-bold text-[#00124c]">{kpi.value}</p>
           </div>
         ))}
       </div>
@@ -249,8 +253,8 @@ export default function DashboardPage() {
         {/* Carte Interactive Preview */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg transition-all">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3  md:mb-5">
-            <h2 className="text-lg sm:text-xl font-bold text-[#3d5a5c]">Carte des Infractions</h2>
-            <button  className="text-sm text-[#3d5a5c] hover:text-[#3d5a5c] font-medium transition-colors text-left sm:text-right">
+            <h2 className="text-lg sm:text-xl font-bold text-[#00124c]">Carte des Infractions</h2>
+            <button  className="text-sm text-[#00124c] hover:text-[#00124c] font-medium transition-colors text-left sm:text-right">
               Voir carte complète →
             </button>
           </div>
@@ -293,7 +297,7 @@ export default function DashboardPage() {
 
         {/* Zones à Risque */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg transition-all">
-          <h2 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4 md:mb-5">Zones à Risque</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4 md:mb-5">Zones à Risque</h2>
           <div className="space-y-3 sm:space-y-4">
             {zonesRisque.map((zone, index) => (
               <div key={index} className="p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl border border-red-200 hover:border-red-300 transition-all">
@@ -320,90 +324,90 @@ export default function DashboardPage() {
 
       {/* KPIs Originaux et Intelligents */}
       <div className="mt-4 md:mt-6 bg-white rounded-xl border border-gray-200 p-4 sm:p-5 md:p-6 hover:shadow-lg transition-all">
-        <h2 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4 md:mb-6">Indicateurs de Performance</h2>
+        <h2 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4 md:mb-6">Indicateurs de Performance</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Score de Conformité */}
-          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#00124c] hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00124c] rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-2">{scoreConformite}%</div>
-            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Score de Conformité</div>
+            <div className="text-sm font-semibold text-[#00124c] mb-1">Score de Conformité</div>
             <div className="text-xs text-gray-500">Conducteurs sans récidive</div>
           </div>
 
           {/* Temps Moyen de Traitement */}
-          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#00124c] hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00124c] rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-2">{tempsMoyenTraitement}</div>
-            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Temps de Traitement</div>
+            <div className="text-sm font-semibold text-[#00124c] mb-1">Temps de Traitement</div>
             <div className="text-xs text-gray-500">Détection → Paiement</div>
           </div>
 
           {/* Taux de Détection IA */}
-          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#00124c] hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00124c] rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-2">{tauxDetectionIA}%</div>
-            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Détection Automatique</div>
+            <div className="text-sm font-semibold text-[#00124c] mb-1">Détection Automatique</div>
             <div className="text-xs text-gray-500">VisionIA en action</div>
           </div>
 
           {/* Efficacité des Agents */}
-          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#00124c] hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00124c] rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-2">{efficaciteAgents}%</div>
-            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Efficacité Agents</div>
+            <div className="text-sm font-semibold text-[#00124c] mb-1">Efficacité Agents</div>
             <div className="text-xs text-gray-500">Taux de validation</div>
           </div>
 
           {/* Impact Préventif */}
-          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#00124c] hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00124c] rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-2">{impactPreventif}%</div>
-            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Impact Préventif</div>
+            <div className="text-sm font-semibold text-[#00124c] mb-1">Impact Préventif</div>
             <div className="text-xs text-gray-500">Baisse zones critiques</div>
           </div>
 
           {/* Véhicules Récidivistes */}
-          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#3d5a5c] hover:shadow-md transition-all">
+          <div className="bg-white rounded-xl p-6 border-2 border-gray-200 hover:border-[#00124c] hover:shadow-md transition-all">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-[#3d5a5c] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00124c] rounded-lg flex items-center justify-center">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-2">{vehiculesRecidivistes}</div>
-            <div className="text-sm font-semibold text-[#3d5a5c] mb-1">Véhicules Récidivistes</div>
+            <div className="text-sm font-semibold text-[#00124c] mb-1">Véhicules Récidivistes</div>
             <div className="text-xs text-gray-500">≥2 infractions détectées</div>
           </div>
         </div>

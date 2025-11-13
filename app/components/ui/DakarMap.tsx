@@ -207,7 +207,7 @@ export default function DakarMapbox({ zones = [] }: Props) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-[#3d5a5c] to-[#2d4a4c] px-6 py-4 flex justify-between items-center">
+            <div className="bg-gradient-to-r from-[#00124c] to-[#2d4a4c] px-6 py-4 flex justify-between items-center">
               <div>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -286,7 +286,7 @@ export default function DakarMapbox({ zones = [] }: Props) {
             <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#3d5a5c]">{selectedZone.infractions}</div>
+                  <div className="text-2xl font-bold text-[#00124c]">{selectedZone.infractions}</div>
                   <div className="text-xs text-gray-600">Infractions</div>
                 </div>
                 <div className="text-center">

@@ -67,7 +67,7 @@ export default function PaymentDetailPage() {
           <p className="text-gray-600 mb-6">Le paiement demandé n'existe pas ou a été supprimé.</p>
           <button
             onClick={() => router.push('/authorities/payments')}
-            className="px-6 py-3 bg-[#3d5a5c] text-white rounded-xl hover:bg-[#2d4a4c] transition-colors font-medium"
+            className="px-6 py-3 bg-[#00124c] text-white rounded-xl hover:bg-[#2d4a4c] transition-colors font-medium"
           >
             Retour à la liste
           </button>
@@ -82,21 +82,21 @@ export default function PaymentDetailPage() {
       <div className="mb-6">
         <button
           onClick={() => router.push('/authorities/payments')}
-          className="flex items-center text-[#3d5a5c] hover:text-[#2d4a4c] mb-4 transition-colors"
+          className="flex items-center text-[#00124c] hover:text-[#2d4a4c] mb-4 transition-colors"
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           <span className="font-medium">Retour à la liste</span>
         </button>
-        <h1 className="text-3xl font-bold text-[#3d5a5c]">Détails du Paiement</h1>
+        <h1 className="text-3xl font-bold text-[#00124c]">Détails du Paiement</h1>
       </div>
 
       {/* Payment Header Card */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h2 className="text-3xl font-bold text-[#3d5a5c] mb-2">Paiement #{payment.id}</h2>
+            <h2 className="text-3xl font-bold text-[#00124c] mb-2">Paiement #{payment.id}</h2>
             <p className="text-xl text-gray-600">{payment.type}</p>
             <div className="flex items-center gap-4 text-sm text-gray-600 mt-2">
               <span className="flex items-center gap-1.5">
@@ -138,7 +138,7 @@ export default function PaymentDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Informations du paiement */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-[#3d5a5c] mb-4 flex items-center">
+          <h3 className="text-xl font-bold text-[#00124c] mb-4 flex items-center">
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -174,7 +174,7 @@ export default function PaymentDetailPage() {
 
         {/* Source du paiement */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-[#3d5a5c] mb-4 flex items-center">
+          <h3 className="text-xl font-bold text-[#00124c] mb-4 flex items-center">
             <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>

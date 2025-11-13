@@ -95,27 +95,27 @@ export default function AgentsPage() {
         <div className="mb-6">
           <button
             onClick={() => setSelectedAgent(null)}
-            className="flex items-center text-[#3d5a5c] hover:text-[#2d4a4c] mb-4 transition-colors"
+            className="flex items-center text-[#00124c] hover:text-[#2d4a4c] mb-4 transition-colors"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
             <span className="font-medium">Retour à la liste</span>
           </button>
-          <h1 className="text-3xl font-bold text-[#3d5a5c]">Détails de l'Agent</h1>
+          <h1 className="text-3xl font-bold text-[#00124c]">Détails de l'Agent</h1>
         </div>
 
         {/* Agent Header Card */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-[#3d5a5c] to-[#2d4a4c] rounded-full flex items-center justify-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#00124c] to-[#2d4a4c] rounded-full flex items-center justify-center">
                 <span className="text-3xl font-bold text-white">
                   {selectedAgent.prenom[0]}{selectedAgent.nom[0]}
                 </span>
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-[#3d5a5c] mb-1">
+                <h2 className="text-3xl font-bold text-[#00124c] mb-1">
                   {selectedAgent.prenom} {selectedAgent.nom}
                 </h2>
                 <p className="text-lg text-gray-600">{selectedAgent.matricule}</p>
@@ -157,7 +157,7 @@ export default function AgentsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Contact Information */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-xl font-bold text-[#3d5a5c] mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-[#00124c] mb-4 flex items-center">
               <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -181,7 +181,7 @@ export default function AgentsPage() {
 
           {/* Performance */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h3 className="text-xl font-bold text-[#3d5a5c] mb-4 flex items-center">
+            <h3 className="text-xl font-bold text-[#00124c] mb-4 flex items-center">
               <TrendingUp className="w-6 h-6 mr-2" />
               Performance
             </h3>
@@ -195,7 +195,7 @@ export default function AgentsPage() {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
-                    className="bg-[#3d5a5c] h-3 rounded-full transition-all"
+                    className="bg-[#00124c] h-3 rounded-full transition-all"
                     style={{ width: `${(selectedAgent.validated / selectedAgent.infractions) * 100}%` }}
                   ></div>
                 </div>
@@ -214,7 +214,7 @@ export default function AgentsPage() {
 
         {/* Historique des Infractions */}
         <div className="mt-6 bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-[#3d5a5c] mb-4 flex items-center">
+          <h3 className="text-xl font-bold text-[#00124c] mb-4 flex items-center">
             <FileText className="w-6 h-6 mr-2" />
             Historique des Infractions ({agentInfractions.length})
           </h3>
@@ -228,7 +228,7 @@ export default function AgentsPage() {
                   placeholder="Rechercher par N°PV, type, lieu, plaque..."
                   value={infractionSearchQuery}
                   onChange={(e) => setInfractionSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                  className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 />
                 <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
               </div>
@@ -394,12 +394,12 @@ export default function AgentsPage() {
       <div className="mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-[#3d5a5c]">Gestion des Agents</h1>
+            <h1 className="text-3xl font-bold text-[#00124c]">Gestion des Agents</h1>
             <p className="text-gray-600 mt-1">Gérez vos agents et suivez leurs performances</p>
           </div>
           <button
             onClick={() => router.push('/authorities/agents/nouveau')}
-            className="px-4 py-2 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg font-medium transition-all flex items-center gap-2"
+            className="px-4 py-2 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg font-medium transition-all flex items-center gap-2"
           >
             <Plus className="w-5 h-5" />
             Nouvel Agent
@@ -456,7 +456,7 @@ export default function AgentsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-[#3d5a5c] mb-2">
+            <label className="block text-sm font-medium text-[#00124c] mb-2">
               Rechercher
             </label>
             <div className="relative">
@@ -465,7 +465,7 @@ export default function AgentsPage() {
                 placeholder="Nom, matricule, zone..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
               />
               <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
             </div>
@@ -473,7 +473,7 @@ export default function AgentsPage() {
 
           {/* Status Filter */}
           <div>
-            <label className="block text-sm font-medium text-[#3d5a5c] mb-2">
+            <label className="block text-sm font-medium text-[#00124c] mb-2">
               Statut
             </label>
             <CustomSelect
@@ -507,7 +507,7 @@ export default function AgentsPage() {
             {/* Agent Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#3d5a5c] to-[#2d4a4c] rounded-full flex items-center justify-center">
+                <div className="w-14 h-14 bg-gradient-to-br from-[#00124c] to-[#2d4a4c] rounded-full flex items-center justify-center">
                   <span className="text-xl font-bold text-white">
                     {agent.prenom[0]}{agent.nom[0]}
                   </span>
@@ -553,7 +553,7 @@ export default function AgentsPage() {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5">
                 <div
-                  className="bg-[#3d5a5c] h-2.5 rounded-full transition-all"
+                  className="bg-[#00124c] h-2.5 rounded-full transition-all"
                   style={{ width: `${(agent.validated / agent.infractions) * 100}%` }}
                 ></div>
               </div>
@@ -569,7 +569,7 @@ export default function AgentsPage() {
                   e.stopPropagation();
                   setSelectedAgent(agent);
                 }}
-                className="flex-1 px-3 py-2 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2"
+                className="flex-1 px-3 py-2 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2"
               >
                 <Eye className="w-4 h-4" />
                 Détails

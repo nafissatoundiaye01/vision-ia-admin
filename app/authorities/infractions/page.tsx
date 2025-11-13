@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Search, Plus, Eye, Camera, FileText, MapPin, Calendar } from 'lucide-react';
 import { INFRACTIONS, AGENTS } from '@/app/data/mockData';
 import CustomSelect from '@/app/components/ui/CustomSelect';
+import { SenegalFlagMini } from '@/app/components/ui/SenegalFlag';
 
 export default function InfractionsPage() {
   const router = useRouter();
@@ -100,14 +101,17 @@ export default function InfractionsPage() {
       <div className="mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#3d5a5c]">
-              Gestion des Infractions
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#00124c]">
+                Gestion des Infractions
+              </h1>
+              <SenegalFlagMini className="shadow-md rounded" />
+            </div>
             <p className="text-sm sm:text-base text-gray-600 mt-1">Surveillance automatisée et agents terrain</p>
           </div>
           <button
             onClick={() => router.push('/authorities/infractions/nouveau')}
-            className="px-4 sm:px-6 py-2.5 sm:py-3 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 text-sm sm:text-base"
+            className="px-4 sm:px-6 py-2.5 sm:py-3 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-xl font-medium transition-all shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 text-sm sm:text-base"
           >
             <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
             <span className="hidden sm:inline">Nouvelle infraction</span>
@@ -120,7 +124,7 @@ export default function InfractionsPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5 hover:shadow-lg transition-shadow">
           <div className="text-xs sm:text-sm text-gray-600 mb-1">Total</div>
-          <div className="text-2xl sm:text-3xl font-bold text-[#3d5a5c]">{stats.total}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-[#00124c]">{stats.total}</div>
         </div>
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border border-green-200 p-4 sm:p-5 hover:shadow-lg transition-shadow">
           <div className="text-xs sm:text-sm text-gray-600 mb-1">Payées</div>
@@ -155,7 +159,7 @@ export default function InfractionsPage() {
                 placeholder="Rechercher par ID, plaque, type..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#3d5a5c]"
+                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-[#00124c]"
               />
             </div>
           </div>
@@ -207,15 +211,15 @@ export default function InfractionsPage() {
           <table className="w-full table-fixed">
             <thead>
               <tr className="border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[12%]">DATE/HEURE</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[15%]">TYPE</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[12%]">LIEU</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[12%]">PLAQUE</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[12%]">MONTANT</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[12%]">STATUT</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[13%]">SOURCE</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[7%]">PHOTOS</th>
-                <th className="text-left py-4 px-3 text-xs font-semibold text-[#3d5a5c] tracking-wider w-[9%]">ACTIONS</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[12%]">DATE/HEURE</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[15%]">TYPE</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[12%]">LIEU</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[12%]">PLAQUE</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[12%]">MONTANT</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[12%]">STATUT</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[13%]">SOURCE</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[7%]">PHOTOS</th>
+                <th className="text-left py-4 px-3 text-xs font-semibold text-[#00124c] tracking-wider w-[9%]">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
@@ -232,7 +236,7 @@ export default function InfractionsPage() {
                     <span className="text-sm text-gray-600 truncate block">{infraction.lieu}</span>
                   </td>
                   <td className="py-4 px-3">
-                    <span className="text-sm font-medium text-[#3d5a5c] truncate block">{infraction.plaque}</span>
+                    <span className="text-sm font-medium text-[#00124c] truncate block">{infraction.plaque}</span>
                   </td>
                   <td className="py-4 px-3">
                     <span className="text-sm font-semibold text-gray-900 truncate block">{parseInt(infraction.montant).toLocaleString()} F</span>
@@ -251,7 +255,7 @@ export default function InfractionsPage() {
                   <td className="py-4 px-3">
                     {infraction.photos && infraction.photos.length > 0 ? (
                       <div className="flex items-center space-x-1">
-                        <Camera className="w-4 h-4 text-[#3d5a5c]" />
+                        <Camera className="w-4 h-4 text-[#00124c]" />
                         <span className="text-xs text-gray-600">{infraction.photos.length}</span>
                       </div>
                     ) : (
@@ -262,7 +266,7 @@ export default function InfractionsPage() {
                     <div className="flex space-x-1">
                       <button
                         onClick={() => router.push(`/authorities/infractions/${infraction.id}`)}
-                        className="p-1.5 bg-[#3d5a5c] hover:bg-[#2d4a4c] border border-[#3d5a5c] rounded-lg transition-colors"
+                        className="p-1.5 bg-[#00124c] hover:bg-[#2d4a4c] border border-[#00124c] rounded-lg transition-colors"
                         title="Voir les détails"
                       >
                         <Eye className="w-4 h-4 text-white" />
@@ -305,7 +309,7 @@ export default function InfractionsPage() {
                   onClick={() => setCurrentPage(pageNum)}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                     currentPage === pageNum
-                      ? 'bg-[#3d5a5c] text-white shadow-lg'
+                      ? 'bg-[#00124c] text-white shadow-lg'
                       : 'bg-white hover:bg-gray-100 border border-gray-300 text-gray-700'
                   }`}
                 >
@@ -330,7 +334,7 @@ export default function InfractionsPage() {
           <div key={infraction.id} className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
             <div className="flex justify-between items-start mb-3">
               <div>
-                <div className="text-xs font-semibold text-[#3d5a5c] mb-1">{infraction.id}</div>
+                <div className="text-xs font-semibold text-[#00124c] mb-1">{infraction.id}</div>
                 <div className="text-lg font-bold text-gray-900">{infraction.plaque}</div>
               </div>
               <div className="flex flex-col items-end gap-1">
@@ -365,13 +369,13 @@ export default function InfractionsPage() {
             </div>
 
             <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-              <div className="text-lg font-bold text-[#3d5a5c]">
+              <div className="text-lg font-bold text-[#00124c]">
                 {parseInt(infraction.montant).toLocaleString()} FCFA
               </div>
               <div className="flex space-x-2">
                 <button
                   onClick={() => router.push(`/authorities/infractions/${infraction.id}`)}
-                  className="p-2 bg-[#3d5a5c] hover:bg-[#2d4a4c] border border-[#3d5a5c] rounded-lg transition-colors"
+                  className="p-2 bg-[#00124c] hover:bg-[#2d4a4c] border border-[#00124c] rounded-lg transition-colors"
                   title="Voir les détails"
                 >
                   <Eye className="w-4 h-4 text-white" />

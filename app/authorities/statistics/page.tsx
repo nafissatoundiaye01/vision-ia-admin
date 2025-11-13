@@ -43,9 +43,9 @@ const CustomSelect = ({ value, onChange, options, placeholder = 'Sélectionner',
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-transparent flex items-center justify-between transition-all ${
+        className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-transparent flex items-center justify-between transition-all ${
           isExport
-            ? 'bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white border-[#3d5a5c] shadow-md hover:shadow-lg'
+            ? 'bg-[#00124c] hover:bg-[#2d4a4c] text-white border-[#00124c] shadow-md hover:shadow-lg'
             : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-400'
         }`}
       >
@@ -79,7 +79,7 @@ const CustomSelect = ({ value, onChange, options, placeholder = 'Sélectionner',
               disabled={!option.value && isExport}
               className={`w-full px-4 py-3 text-left transition-colors flex items-start gap-3 ${
                 option.value === value
-                  ? 'bg-[#3d5a5c] text-white'
+                  ? 'bg-[#00124c] text-white'
                   : option.value && isExport
                   ? 'hover:bg-gray-50'
                   : !option.value && isExport
@@ -465,7 +465,7 @@ export default function StatisticsPage() {
           <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="gradient1" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" style="stop-color:#3d5a5c;stop-opacity:1" />
+                <stop offset="0%" style="stop-color:#00124c;stop-opacity:1" />
                 <stop offset="100%" style="stop-color:#5a7a7c;stop-opacity:1" />
               </linearGradient>
             </defs>
@@ -538,7 +538,7 @@ export default function StatisticsPage() {
           const barWidth = (item.percentage / 100) * 550;
           const y = index * itemHeight + 10;
           return `
-            <text x="10" y="${y + 18}" font-size="24" font-weight="800" fill="#3d5a5c" text-anchor="start">${item.percentage}%</text>
+            <text x="10" y="${y + 18}" font-size="24" font-weight="800" fill="#00124c" text-anchor="start">${item.percentage}%</text>
             <text x="90" y="${y + 18}" font-size="13" font-weight="500" fill="#374151">${item.type}</text>
             <text x="690" y="${y + 18}" text-anchor="end" font-size="13" font-weight="700" fill="#111">${item.count}</text>
             <rect x="90" y="${y + 23}" width="550" height="8" fill="#e5e7eb" rx="4"/>
@@ -550,7 +550,7 @@ export default function StatisticsPage() {
           <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="gradientVehicle" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" style="stop-color:#3d5a5c;stop-opacity:1" />
+                <stop offset="0%" style="stop-color:#00124c;stop-opacity:1" />
                 <stop offset="100%" style="stop-color:#5a7a7c;stop-opacity:1" />
               </linearGradient>
             </defs>
@@ -583,7 +583,7 @@ export default function StatisticsPage() {
           <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="gradientZoneBadge" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#3d5a5c;stop-opacity:1" />
+                <stop offset="0%" style="stop-color:#00124c;stop-opacity:1" />
                 <stop offset="100%" style="stop-color:#2d4a4c;stop-opacity:1" />
               </linearGradient>
               <linearGradient id="gradientZone" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -618,7 +618,7 @@ export default function StatisticsPage() {
             </text>
             <text x="650" y="${y + 20}" text-anchor="end" font-size="11" font-weight="600" fill="#10b981">${item.efficiency}%</text>
             <rect x="60" y="${y + 28}" width="310" height="6" fill="#e5e7eb" rx="3"/>
-            <rect x="60" y="${y + 28}" width="${infraWidth}" height="6" fill="#3d5a5c" rx="3"/>
+            <rect x="60" y="${y + 28}" width="${infraWidth}" height="6" fill="#00124c" rx="3"/>
             <rect x="380" y="${y + 28}" width="310" height="6" fill="#e5e7eb" rx="3"/>
             <rect x="380" y="${y + 28}" width="${validWidth}" height="6" fill="url(#gradientAgentValid)" rx="3"/>
           `;
@@ -676,10 +676,10 @@ export default function StatisticsPage() {
             <g transform="translate(100, 90)">
               <g transform="rotate(-90)">
                 <circle cx="0" cy="0" r="56" stroke="#e5e7eb" stroke-width="12" fill="none" />
-                <circle cx="0" cy="0" r="56" stroke="#3d5a5c" stroke-width="12" fill="none"
+                <circle cx="0" cy="0" r="56" stroke="#00124c" stroke-width="12" fill="none"
                   stroke-dasharray="${progress} ${circumference}" stroke-linecap="round" />
               </g>
-              <text x="0" y="5" text-anchor="middle" font-size="24" font-weight="800" fill="#3d5a5c">${percentage}%</text>
+              <text x="0" y="5" text-anchor="middle" font-size="24" font-weight="800" fill="#00124c">${percentage}%</text>
               <text x="0" y="20" text-anchor="middle" font-size="11" fill="#6b7280">Payées</text>
             </g>
           </svg>
@@ -707,8 +707,8 @@ export default function StatisticsPage() {
               background: white;
             }
             h1 {
-              color: #3d5a5c;
-              border-bottom: 4px solid #3d5a5c;
+              color: #00124c;
+              border-bottom: 4px solid #00124c;
               padding-bottom: 15px;
               margin-bottom: 10px;
               font-size: 32px;
@@ -717,7 +717,7 @@ export default function StatisticsPage() {
               gap: 15px;
             }
             h2 {
-              color: #3d5a5c;
+              color: #00124c;
               margin-top: 40px;
               margin-bottom: 20px;
               padding-bottom: 10px;
@@ -725,7 +725,7 @@ export default function StatisticsPage() {
               font-size: 22px;
             }
             h3 {
-              color: #3d5a5c;
+              color: #00124c;
               margin: 20px 0 15px 0;
               font-size: 16px;
             }
@@ -746,7 +746,7 @@ export default function StatisticsPage() {
               padding: 20px;
               border-radius: 10px;
               margin-bottom: 30px;
-              border-left: 4px solid #3d5a5c;
+              border-left: 4px solid #00124c;
             }
             .filters p {
               margin: 8px 0;
@@ -777,7 +777,7 @@ export default function StatisticsPage() {
             .kpi-value {
               font-size: 28px;
               font-weight: 800;
-              color: #3d5a5c;
+              color: #00124c;
               margin: 8px 0;
             }
             .kpi-sub {
@@ -794,7 +794,7 @@ export default function StatisticsPage() {
               overflow: hidden;
             }
             th {
-              background: #3d5a5c;
+              background: #00124c;
               color: white;
               padding: 14px 12px;
               text-align: left;
@@ -847,7 +847,7 @@ export default function StatisticsPage() {
               font-weight: 600;
             }
             .stat-value {
-              color: #3d5a5c;
+              color: #00124c;
               font-size: 16px;
               font-weight: 700;
             }
@@ -864,7 +864,7 @@ export default function StatisticsPage() {
             }
             .print-button {
               padding: 12px 24px;
-              background: #3d5a5c;
+              background: #00124c;
               color: white;
               border: none;
               border-radius: 8px;
@@ -1079,7 +1079,7 @@ export default function StatisticsPage() {
                     <td style="text-align: center;">${item.infractions}</td>
                     <td style="text-align: center; color: #10b981;"><strong>${item.validated}</strong></td>
                     <td style="text-align: center; color: #dc2626;">${item.rejected}</td>
-                    <td style="text-align: center; color: #3d5a5c;"><strong>${item.efficiency}%</strong></td>
+                    <td style="text-align: center; color: #00124c;"><strong>${item.efficiency}%</strong></td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -1321,7 +1321,7 @@ export default function StatisticsPage() {
             <div class="footer">
               <p><strong>Rapport généré automatiquement par le système de gestion des infractions</strong></p>
               <p>${data.exportDate}</p>
-              <p style="margin-top: 10px; color: #3d5a5c; font-weight: 600;">Vision IA - Système de Gestion des Infractions Routières</p>
+              <p style="margin-top: 10px; color: #00124c; font-weight: 600;">Vision IA - Système de Gestion des Infractions Routières</p>
             </div>
           </div>
         </body>
@@ -1340,7 +1340,7 @@ export default function StatisticsPage() {
       <div className="mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-[#3d5a5c]">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#00124c]">
               Statistiques & Analyses
             </h1>
             <p className="text-sm sm:text-base text-gray-600 mt-1">
@@ -1363,7 +1363,7 @@ export default function StatisticsPage() {
             />
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="px-3 sm:px-4 py-2 bg-white border border-gray-300 hover:border-[#3d5a5c] text-gray-700 rounded-lg font-medium transition-all flex items-center space-x-2 text-sm"
+              className="px-3 sm:px-4 py-2 bg-white border border-gray-300 hover:border-[#00124c] text-gray-700 rounded-lg font-medium transition-all flex items-center space-x-2 text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -1503,7 +1503,7 @@ export default function StatisticsPage() {
                   type="date"
                   value={dateRange.start}
                   onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3d5a5c]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00124c]"
                 />
               </div>
               <div>
@@ -1512,7 +1512,7 @@ export default function StatisticsPage() {
                   type="date"
                   value={dateRange.end}
                   onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3d5a5c]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00124c]"
                 />
               </div>
             </div>
@@ -1526,7 +1526,7 @@ export default function StatisticsPage() {
             </button>
             <button 
               onClick={handleApplyFilters}
-              className="px-4 py-2 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg text-sm transition-colors"
+              className="px-4 py-2 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg text-sm transition-colors"
             >
               Appliquer
             </button>
@@ -1536,9 +1536,9 @@ export default function StatisticsPage() {
 
       {/* KPIs Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <div className={`bg-white rounded-xl border-2 border-[#3d5a5c] p-3 sm:p-4 hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '100ms' }}>
-          <div className="text-xs font-semibold text-[#3d5a5c] tracking-wider">TOTAL</div>
-          <div className="text-2xl sm:text-3xl font-bold text-[#3d5a5c] mt-1 sm:mt-2">{totalInfractions}</div>
+        <div className={`bg-white rounded-xl border-2 border-[#00124c] p-3 sm:p-4 hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '100ms' }}>
+          <div className="text-xs font-semibold text-[#00124c] tracking-wider">TOTAL</div>
+          <div className="text-2xl sm:text-3xl font-bold text-[#00124c] mt-1 sm:mt-2">{totalInfractions}</div>
           <div className="text-xs text-green-600 mt-1 flex items-center">
             <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
@@ -1561,14 +1561,14 @@ export default function StatisticsPage() {
           <div className="text-2xl sm:text-3xl font-bold text-red-600 mt-1 sm:mt-2">{totalRelance}</div>
           <div className="text-xs text-red-600 mt-1">{totalInfractions > 0 ? ((totalRelance / totalInfractions) * 100).toFixed(1) : 0}%</div>
         </div>
-        <div className={`bg-white rounded-xl border border-gray-200 p-3 sm:p-4 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '500ms' }}>
+        <div className={`bg-white rounded-xl border border-gray-200 p-3 sm:p-4 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '500ms' }}>
           <div className="text-xs font-semibold text-gray-600 tracking-wider">RECOUVR.</div>
-          <div className="text-xl sm:text-2xl font-bold text-[#3d5a5c] mt-1 sm:mt-2">{(totalRevenue / 1000000).toFixed(1)}M</div>
+          <div className="text-xl sm:text-2xl font-bold text-[#00124c] mt-1 sm:mt-2">{(totalRevenue / 1000000).toFixed(1)}M</div>
           <div className="text-xs text-gray-600 mt-1">FCFA</div>
         </div>
-        <div className={`bg-white rounded-xl border border-gray-200 p-3 sm:p-4 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '600ms' }}>
+        <div className={`bg-white rounded-xl border border-gray-200 p-3 sm:p-4 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '600ms' }}>
           <div className="text-xs font-semibold text-gray-600 tracking-wider">MOY/JOUR</div>
-          <div className="text-2xl sm:text-3xl font-bold text-[#3d5a5c] mt-1 sm:mt-2">{avgPerDay}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-[#00124c] mt-1 sm:mt-2">{avgPerDay}</div>
           <div className="text-xs text-green-600 mt-1">+5%</div>
         </div>
       </div>
@@ -1576,11 +1576,11 @@ export default function StatisticsPage() {
       {/* Main Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
         {/* Evolution Chart */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '700ms' }}>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '700ms' }}>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c]">Évolution Temporelle</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-[#00124c]">Évolution Temporelle</h3>
             <div className="flex space-x-2">
-              <button className="px-2 py-1 text-xs bg-[#3d5a5c] text-white rounded">Tout</button>
+              <button className="px-2 py-1 text-xs bg-[#00124c] text-white rounded">Tout</button>
               <button className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded hover:bg-gray-200">Payées</button>
             </div>
           </div>
@@ -1589,7 +1589,7 @@ export default function StatisticsPage() {
               <div key={index} className="flex-1 flex flex-col items-center space-y-1 sm:space-y-2">
                 <div className="w-full relative" style={{ height: '150px' }}>
                   <div
-                    className={`absolute bottom-0 w-full bg-gradient-to-t from-[#3d5a5c] to-[#5a7a7c] rounded-t-lg transition-all hover:from-[#2d4a4c] hover:to-[#4a6a6c] cursor-pointer group ${isLoaded ? 'scale-y-100' : 'scale-y-0'}`}
+                    className={`absolute bottom-0 w-full bg-gradient-to-t from-[#00124c] to-[#5a7a7c] rounded-t-lg transition-all hover:from-[#2d4a4c] hover:to-[#4a6a6c] cursor-pointer group ${isLoaded ? 'scale-y-100' : 'scale-y-0'}`}
                     style={{ 
                       height: `${maxEvolution > 0 ? (item.infractions / maxEvolution) * 100 : 0}%`,
                       transitionDuration: '1000ms',
@@ -1613,8 +1613,8 @@ export default function StatisticsPage() {
         </div>
 
         {/* Types Distribution */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '800ms' }}>
-          <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4 sm:mb-5">Répartition par Type</h3>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '800ms' }}>
+          <h3 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4 sm:mb-5">Répartition par Type</h3>
           <div className="space-y-3 sm:space-y-4">
             {typesData.map((item, index) => (
               <div key={index} className="space-y-1.5 sm:space-y-2 group">
@@ -1644,8 +1644,8 @@ export default function StatisticsPage() {
       {/* Hourly Distribution & Vehicle Types */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
         {/* Hourly Distribution */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '1800ms' }}>
-          <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4">Distribution Horaire</h3>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '1800ms' }}>
+          <h3 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4">Distribution Horaire</h3>
           <div className="h-48 flex items-end justify-between space-x-1">
             {hourlyData.map((item, index) => {
               const maxHourly = Math.max(...hourlyData.map(d => d.count));
@@ -1674,13 +1674,13 @@ export default function StatisticsPage() {
         </div>
 
         {/* Vehicle Types */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '1900ms' }}>
-          <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4">Types de Véhicules</h3>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`} style={{ transitionDuration: '800ms', transitionDelay: '1900ms' }}>
+          <h3 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4">Types de Véhicules</h3>
           <div className="space-y-4">
             {vehicleTypes.map((item, index) => (
               <div key={index} className="flex items-center space-x-4">
                 <div className="flex-shrink-0 w-16 text-right">
-                  <span className="text-2xl font-bold text-[#3d5a5c]">{item.percentage}%</span>
+                  <span className="text-2xl font-bold text-[#00124c]">{item.percentage}%</span>
                 </div>
                 <div className="flex-1">
                   <div className="flex justify-between items-center mb-2">
@@ -1689,7 +1689,7 @@ export default function StatisticsPage() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className={`bg-gradient-to-r from-[#3d5a5c] to-[#5a7a7c] h-2 rounded-full transition-all ${isLoaded ? 'w-full' : 'w-0'}`}
+                      className={`bg-gradient-to-r from-[#00124c] to-[#5a7a7c] h-2 rounded-full transition-all ${isLoaded ? 'w-full' : 'w-0'}`}
                       style={{ 
                         width: isLoaded ? `${item.percentage}%` : '0%',
                         transitionDuration: '1200ms',
@@ -1707,15 +1707,15 @@ export default function StatisticsPage() {
       {/* Zones & Agents */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
         {/* Top Zones */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '2800ms' }}>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '2800ms' }}>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c]">Top Zones à Risque</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-[#00124c]">Top Zones à Risque</h3>
             <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">HOT</span>
           </div>
           <div className="space-y-3 sm:space-y-4">
             {zonesData.slice(0, 5).map((item, index) => (
               <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
-                <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#3d5a5c] to-[#2d4a4c] rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-all">
+                <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-[#00124c] to-[#2d4a4c] rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-all">
                   <span className="text-white font-bold text-sm">{index + 1}</span>
                 </div>
                 <div className="flex-1 min-w-0">
@@ -1743,9 +1743,9 @@ export default function StatisticsPage() {
         </div>
 
         {/* Performance Agents */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '2900ms' }}>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '2900ms' }}>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c]">Performance Agents</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-[#00124c]">Performance Agents</h3>
             <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">ACTIF</span>
           </div>
           <div className="space-y-3 sm:space-y-4">
@@ -1753,7 +1753,7 @@ export default function StatisticsPage() {
               const maxAgent = Math.max(...agentsData.map(a => a.infractions));
               return (
                 <div key={index} className="flex items-center space-x-3 sm:space-x-4 group">
-                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center border-2 border-gray-300 group-hover:border-[#3d5a5c] transition-all">
+                  <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center border-2 border-gray-300 group-hover:border-[#00124c] transition-all">
                     <svg className="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
@@ -1769,7 +1769,7 @@ export default function StatisticsPage() {
                     <div className="flex space-x-2">
                       <div className="flex-1 bg-gray-200 rounded-full h-1.5">
                         <div
-                          className={`bg-[#3d5a5c] h-1.5 rounded-full transition-all shadow-sm ${isLoaded ? 'w-full' : 'w-0'}`}
+                          className={`bg-[#00124c] h-1.5 rounded-full transition-all shadow-sm ${isLoaded ? 'w-full' : 'w-0'}`}
                           style={{ 
                             width: isLoaded ? `${maxAgent > 0 ? (item.infractions / maxAgent) * 100 : 0}%` : '0%',
                             transitionDuration: '1000ms',
@@ -1799,8 +1799,8 @@ export default function StatisticsPage() {
       {/* Payment Methods & Additional Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
         {/* Payment Methods */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '3600ms' }}>
-          <h3 className="text-lg font-bold text-[#3d5a5c] mb-4">Modes de Paiement</h3>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '3600ms' }}>
+          <h3 className="text-lg font-bold text-[#00124c] mb-4">Modes de Paiement</h3>
           <div className="space-y-3">
             {paymentMethods.map((item, index) => (
               <div key={index} className="flex items-center justify-between">
@@ -1822,15 +1822,15 @@ export default function StatisticsPage() {
         </div>
 
         {/* Taux de Recouvrement */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '3700ms' }}>
-          <h3 className="text-lg font-bold text-[#3d5a5c] mb-4">Taux de Recouvrement</h3>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '3700ms' }}>
+          <h3 className="text-lg font-bold text-[#00124c] mb-4">Taux de Recouvrement</h3>
           <div className="flex items-center justify-center h-32">
             <div className="relative w-32 h-32">
               <svg className="transform -rotate-90 w-32 h-32">
                 <circle cx="64" cy="64" r="56" stroke="#e5e7eb" strokeWidth="12" fill="none" />
                 <circle 
                   cx="64" cy="64" r="56" 
-                  stroke="#3d5a5c" 
+                  stroke="#00124c" 
                   strokeWidth="12" 
                   fill="none"
                   strokeDasharray={isLoaded ? `${totalInfractions > 0 ? ((totalPaid / totalInfractions) * 352) : 0} 352` : '0 352'}
@@ -1842,7 +1842,7 @@ export default function StatisticsPage() {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold text-[#3d5a5c]">
+                <span className="text-2xl font-bold text-[#00124c]">
                   {totalInfractions > 0 ? ((totalPaid / totalInfractions) * 100).toFixed(1) : 0}%
                 </span>
                 <span className="text-xs text-gray-600">Payées</span>
@@ -1866,16 +1866,16 @@ export default function StatisticsPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '3800ms' }}>
-          <h3 className="text-lg font-bold text-[#3d5a5c] mb-4">Statistiques Rapides</h3>
+        <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '3800ms' }}>
+          <h3 className="text-lg font-bold text-[#00124c] mb-4">Statistiques Rapides</h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
               <span className="text-sm text-gray-700">Délai moyen de paiement</span>
-              <span className="text-sm font-bold text-[#3d5a5c]">3.2 jours</span>
+              <span className="text-sm font-bold text-[#00124c]">3.2 jours</span>
             </div>
             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
               <span className="text-sm text-gray-700">Montant moyen</span>
-              <span className="text-sm font-bold text-[#3d5a5c]">
+              <span className="text-sm font-bold text-[#00124c]">
                 {totalInfractions > 0 ? (totalRevenue / totalInfractions).toFixed(0) : 0} FCFA
               </span>
             </div>
@@ -1885,21 +1885,21 @@ export default function StatisticsPage() {
             </div>
             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
               <span className="text-sm text-gray-700">Infractions/Agent</span>
-              <span className="text-sm font-bold text-[#3d5a5c]">
+              <span className="text-sm font-bold text-[#00124c]">
                 {agentsData.length > 0 ? Math.round(totalInfractions / agentsData.length) : 0}
               </span>
             </div>
             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
               <span className="text-sm text-gray-700">Pic d'activité</span>
-              <span className="text-sm font-bold text-[#3d5a5c]">17h-18h</span>
+              <span className="text-sm font-bold text-[#00124c]">17h-18h</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Comparaison Périodes */}
-      <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all mb-4 sm:mb-6 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '4200ms' }}>
-        <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4">Comparaison avec Période Précédente</h3>
+      <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all mb-4 sm:mb-6 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '4200ms' }}>
+        <h3 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4">Comparaison avec Période Précédente</h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="text-center p-3 bg-green-50 rounded-lg">
             <div className="text-xs text-gray-600 mb-1">Infractions</div>
@@ -1925,8 +1925,8 @@ export default function StatisticsPage() {
       </div>
 
       {/* Top Infractions Details */}
-      <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#3d5a5c] hover:shadow-lg transition-all mb-4 sm:mb-6 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '4300ms' }}>
-        <h3 className="text-lg sm:text-xl font-bold text-[#3d5a5c] mb-4">Détails des Infractions les Plus Fréquentes</h3>
+      <div className={`bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 hover:border-[#00124c] hover:shadow-lg transition-all mb-4 sm:mb-6 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '4300ms' }}>
+        <h3 className="text-lg sm:text-xl font-bold text-[#00124c] mb-4">Détails des Infractions les Plus Fréquentes</h3>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -1969,7 +1969,7 @@ export default function StatisticsPage() {
       <div className={`bg-white rounded-2xl border border-gray-200 p-3 sm:p-4 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`} style={{ transitionDuration: '600ms', transitionDelay: '4400ms' }}>
         <div className="flex flex-wrap gap-4 sm:gap-6 justify-center">
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-[#3d5a5c] rounded-full"></div>
+            <div className="w-3 h-3 bg-[#00124c] rounded-full"></div>
             <span className="text-xs text-gray-600">Infractions totales</span>
           </div>
           <div className="flex items-center space-x-2">

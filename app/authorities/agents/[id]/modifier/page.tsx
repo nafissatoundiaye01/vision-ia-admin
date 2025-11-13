@@ -143,7 +143,7 @@ export default function EditAgentPage() {
             <p className="text-gray-600 mb-6">L'agent demandé n'existe pas ou a été supprimé.</p>
             <button
               onClick={() => router.push('/authorities/agents')}
-              className="px-6 py-3 bg-[#3d5a5c] text-white rounded-xl hover:bg-[#2d4a4c] transition-colors font-medium"
+              className="px-6 py-3 bg-[#00124c] text-white rounded-xl hover:bg-[#2d4a4c] transition-colors font-medium"
             >
               Retour à la liste
             </button>
@@ -172,12 +172,12 @@ export default function EditAgentPage() {
       <div className="mb-6">
         <button
           onClick={() => router.push('/authorities/agents')}
-          className="flex items-center text-[#3d5a5c] hover:text-[#2d4a4c] mb-4 transition-colors"
+          className="flex items-center text-[#00124c] hover:text-[#2d4a4c] mb-4 transition-colors"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           <span className="font-medium">Retour à la liste</span>
         </button>
-        <h1 className="text-3xl font-bold text-[#3d5a5c]">Modifier l'agent</h1>
+        <h1 className="text-3xl font-bold text-[#00124c]">Modifier l'agent</h1>
         <p className="text-gray-600 mt-1">
           Modification de l'agent {agent.prenom} {agent.nom} ({agent.matricule})
         </p>
@@ -198,7 +198,7 @@ export default function EditAgentPage() {
                 value={formData.prenom}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 placeholder="Ex: Mamadou"
               />
             </div>
@@ -214,7 +214,7 @@ export default function EditAgentPage() {
                 value={formData.nom}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 placeholder="Ex: Diop"
               />
             </div>
@@ -230,7 +230,7 @@ export default function EditAgentPage() {
                 value={formData.matricule}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 placeholder="Ex: AG-2024-001"
               />
             </div>
@@ -246,7 +246,7 @@ export default function EditAgentPage() {
                 value={formData.zone}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 placeholder="Ex: Dakar Plateau"
               />
             </div>
@@ -262,7 +262,7 @@ export default function EditAgentPage() {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 placeholder="Ex: agent@vision-ia.sn"
               />
             </div>
@@ -278,7 +278,7 @@ export default function EditAgentPage() {
                 value={formData.tel}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-[#3d5a5c]"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-[#00124c]"
                 placeholder="Ex: +221 77 123 45 67"
               />
             </div>
@@ -326,7 +326,7 @@ export default function EditAgentPage() {
             </button>
             <button
               type="submit"
-              className="px-6 py-2.5 bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+              className="px-6 py-2.5 bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg font-medium transition-colors flex items-center gap-2"
             >
               <Save className="w-4 h-4" />
               Enregistrer les modifications

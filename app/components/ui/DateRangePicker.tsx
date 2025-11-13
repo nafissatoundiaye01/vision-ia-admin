@@ -164,7 +164,7 @@ export default function DateRangePicker({
       {/* Input trigger */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2.5 text-left bg-white border border-gray-300 rounded-lg hover:border-[#3d5a5c] focus:outline-none focus:ring-2 focus:ring-[#3d5a5c] focus:border-transparent transition-all text-sm"
+        className="w-full px-3 py-2.5 text-left bg-white border border-gray-300 rounded-lg hover:border-[#00124c] focus:outline-none focus:ring-2 focus:ring-[#00124c] focus:border-transparent transition-all text-sm"
       >
         <div className="flex items-center justify-between">
           <span className={startDate ? 'text-gray-900' : 'text-gray-500'}>
@@ -194,7 +194,7 @@ export default function DateRangePicker({
                 <button
                   key={quick.label}
                   onClick={() => handleQuickSelect(quick.days)}
-                  className="px-2.5 py-1 text-xs bg-gray-100 hover:bg-[#3d5a5c] hover:text-white rounded-md transition-colors"
+                  className="px-2.5 py-1 text-xs bg-gray-100 hover:bg-[#00124c] hover:text-white rounded-md transition-colors"
                 >
                   {quick.label}
                 </button>
@@ -213,7 +213,7 @@ export default function DateRangePicker({
               </svg>
             </button>
 
-            <div className="text-sm font-semibold text-[#3d5a5c]">
+            <div className="text-sm font-semibold text-[#00124c]">
               {monthNames[month]} {year}
             </div>
 
@@ -260,9 +260,9 @@ export default function DateRangePicker({
                   className={`
                     aspect-square flex items-center justify-center text-sm rounded-lg transition-all
                     ${isStart || isEnd
-                      ? 'bg-[#3d5a5c] text-white font-semibold shadow-md'
+                      ? 'bg-[#00124c] text-white font-semibold shadow-md'
                       : isInRange || isHovered
-                      ? 'bg-[#3d5a5c]/20 text-[#3d5a5c]'
+                      ? 'bg-[#00124c]/20 text-[#00124c]'
                       : 'hover:bg-gray-100 text-gray-700'
                     }
                   `}
@@ -283,7 +283,7 @@ export default function DateRangePicker({
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="flex-1 px-3 py-2 text-xs bg-[#3d5a5c] hover:bg-[#2d4a4c] text-white rounded-lg font-medium transition-colors"
+              className="flex-1 px-3 py-2 text-xs bg-[#00124c] hover:bg-[#2d4a4c] text-white rounded-lg font-medium transition-colors"
             >
               Fermer
             </button>
